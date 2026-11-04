@@ -3,26 +3,54 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#899bb9">
-  <meta name="description" content="Технический прототип параллакса с реакцией на наклон телефона.">
-  <title>Фото — тест глубины</title>
-  <link rel="preload" as="image" href="assets/poster.webp">
-  <link rel="stylesheet" href="style.css?v=4">
-  <script src="app.js?v=4" defer></script>
+  <meta name="theme-color" content="#8d9cb8">
+  <meta name="description" content="Стас Торопов: ведущий, свадебное агентство «В титрах», ST EVENT и Караоке Рейв.">
+  <title>Стас Торопов — проекты</title>
+  <link rel="preload" as="image" href="assets/hero-mobile.jpg">
+  <link rel="preload" as="font" href="assets/fonts/onest-regular.woff2" type="font/woff2" crossorigin>
+  <link rel="preload" as="font" href="assets/fonts/onest-semibold.woff2" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="mobile.css?v=1">
+  <script src="liquid-glass.js?v=1" defer></script>
 </head>
 <body>
-  <main class="demo">
-    <section class="scene" aria-label="Фотография с реакцией на наклон">
-      <img class="poster" src="assets/poster.webp" width="1080" height="1920" alt="Человек на диване среди цветов у моря" fetchpriority="high">
-      <div class="world" aria-hidden="true" hidden>
-        <img class="scene-layer landscape" src="assets/landscape.webp" width="1080" height="1920" alt="" decoding="async" draggable="false">
-        <img class="scene-layer sofa-person" src="assets/sofa-person.webp" width="1080" height="1920" alt="" decoding="async" draggable="false">
-        <img class="scene-layer foreground" src="assets/foreground.webp" width="1080" height="1920" alt="" decoding="async" draggable="false">
-      </div>
-      <p id="scene-hint" class="sr-only">Глубина — с первого взгляда.</p>
-      <button id="sensor-activation" class="sensor-activation" type="button" aria-label="Разрешить реакцию фотографии на наклон" hidden><span>Коснись фото</span></button>
-    </section>
-    <p id="status" class="sr-only" role="status"></p>
+  <svg class="filter-definitions" width="0" height="0" aria-hidden="true" focusable="false">
+    <defs>
+      <filter id="liquid" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+        <feImage id="liquid-map" x="0" y="0" width="100%" height="100%" preserveAspectRatio="none" result="map"/>
+        <feDisplacementMap in="SourceGraphic" in2="map" scale="32" xChannelSelector="R" yChannelSelector="G"/>
+      </filter>
+      <symbol id="project-arrow" viewBox="0 0 16 16">
+        <path d="M4.5 11.5 11.5 4.5M5 4.5h6.5V11" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </symbol>
+    </defs>
+  </svg>
+  <main class="hero" aria-label="Стас Торопов и его проекты">
+    <img id="portrait" class="portrait" src="assets/hero-mobile.jpg" width="1080" height="1920" alt="Стас Торопов на диване среди цветов у моря" fetchpriority="high" decoding="async">
+    <header class="identity">
+      <h1><img class="wordmark" src="assets/wordmark.png" width="810" height="179" alt="Стас Торопов"></h1>
+    </header>
+    <nav class="projects" aria-label="Выбрать направление">
+      <a class="project-link" href="https://stastoropov.ru/" aria-label="Стас Торопов — ведущий и шоумен" style="--step:0">
+        <span class="glass glass-nav" aria-hidden="true"></span>
+        <span class="project-copy"><span class="project-name">Ведущий</span><span class="project-detail">Стас Торопов</span></span>
+        <span class="project-arrow" aria-hidden="true"><svg viewBox="0 0 16 16"><use href="#project-arrow"/></svg></span>
+      </a>
+      <a class="project-link" href="https://help-wedding.ru/" aria-label="В титрах — свадебное агентство" style="--step:1">
+        <span class="glass glass-nav" aria-hidden="true"></span>
+        <span class="project-copy"><span class="project-name">Свадьбы</span><span class="project-detail">В титрах</span></span>
+        <span class="project-arrow" aria-hidden="true"><svg viewBox="0 0 16 16"><use href="#project-arrow"/></svg></span>
+      </a>
+      <a class="project-link" href="https://st-event.com/" aria-label="ST EVENT — event-агентство" style="--step:2">
+        <span class="glass glass-nav" aria-hidden="true"></span>
+        <span class="project-copy"><span class="project-name">События</span><span class="project-detail">ST EVENT</span></span>
+        <span class="project-arrow" aria-hidden="true"><svg viewBox="0 0 16 16"><use href="#project-arrow"/></svg></span>
+      </a>
+      <a class="project-link" href="https://karaokerave.ru/" aria-label="Караоке Рейв — караоке с оркестром" style="--step:3">
+        <span class="glass glass-nav" aria-hidden="true"></span>
+        <span class="project-copy"><span class="project-name">Караоке</span><span class="project-detail">С оркестром</span></span>
+        <span class="project-arrow" aria-hidden="true"><svg viewBox="0 0 16 16"><use href="#project-arrow"/></svg></span>
+      </a>
+    </nav>
   </main>
 </body>
 </html>
