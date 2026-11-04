@@ -3,37 +3,35 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#edf2f7">
+  <meta name="theme-color" content="#899bb9">
   <meta name="description" content="Технический прототип параллакса с реакцией на наклон телефона.">
   <title>Тест глубины — Стас Торопов</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="app.js" defer></script>
+  <link rel="preload" as="image" href="assets/poster.webp">
+  <link rel="stylesheet" href="style.css?v=3">
+  <script src="app.js?v=3" defer></script>
 </head>
 <body>
   <main class="demo">
-    <header><span>Стас Торопов</span><span class="prototype">Тест параллакса</span></header>
-    <section class="scene" aria-label="Трёхмерная сцена для проверки глубины">
-      <div class="world" aria-hidden="true">
-        <div class="plane plane-back"></div>
-        <div class="plane plane-middle"></div>
-        <div class="plane plane-front"></div>
-        <div class="orb orb-back"></div>
-        <div class="orb orb-front"></div>
+    <header class="intro">
+      <h1>Стас Торопов</h1>
+      <nav class="projects" aria-label="Проекты Стаса Торопова">
+        <a href="https://stastoropov.ru/">stastoropov.ru</a>
+        <a href="https://help-wedding.ru/">help-wedding.ru</a>
+        <a href="https://st-event.com/">st-event.com</a>
+        <a href="https://karaokerave.ru/">karaokerave.ru</a>
+      </nav>
+    </header>
+    <section class="scene" aria-label="Стас Торопов на диване среди цветов у моря">
+      <img class="poster" src="assets/poster.webp" width="1080" height="1920" alt="Стас Торопов на диване среди цветов у моря" fetchpriority="high">
+      <div class="world" aria-hidden="true" hidden>
+        <img class="scene-layer landscape" src="assets/landscape.webp" width="1080" height="1920" alt="" decoding="async" draggable="false">
+        <img class="scene-layer sofa-person" src="assets/sofa-person.webp" width="1080" height="1920" alt="" decoding="async" draggable="false">
+        <img class="scene-layer foreground" src="assets/foreground.webp" width="1080" height="1920" alt="" decoding="async" draggable="false">
       </div>
-      <div class="scene-copy"><h1>Почувствуй<br>глубину.</h1><p>Наклони телефон.<br>Сцена изменит перспективу.</p></div>
+      <p id="scene-hint" class="sr-only">Глубина — с первого взгляда.</p>
+      <button id="sensor-activation" class="sensor-activation" type="button" hidden><span>Коснись сцены для реакции на наклон</span></button>
     </section>
-    <section class="controls" aria-label="Управление движением">
-      <div class="primary-controls"><button id="enable" type="button" disabled>Включить наклон</button><button id="pause" type="button" disabled>Пауза</button></div>
-      <div class="secondary-controls"><button id="recenter" type="button" disabled>Задать центр</button><button id="replay" type="button" disabled>Показать движение</button></div>
-      <p id="status" role="status">Загрузка управления…</p>
-      <noscript><p>Для движения нужен JavaScript. Ссылки на проекты доступны ниже.</p></noscript>
-    </section>
-    <nav class="projects" aria-label="Проекты Стаса Торопова">
-      <a href="https://stastoropov.ru/">stastoropov.ru</a>
-      <a href="https://help-wedding.ru/">help-wedding.ru</a>
-      <a href="https://st-event.com/">st-event.com</a>
-      <a href="https://karaokerave.ru/">karaokerave.ru</a>
-    </nav>
+    <p id="status" class="sr-only" role="status"></p>
   </main>
 </body>
 </html>
