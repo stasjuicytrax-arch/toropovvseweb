@@ -76,7 +76,9 @@ export function connectMotion({ stage, activation, status, onPose,
     const pose = orientationPose(event.beta, event.gamma, baseline,
       win.screen?.orientation?.angle ?? win.orientation ?? 0);
     if (intro && Math.abs(pose.x) + Math.abs(pose.y) < .025) return;
+    const wasIntro = intro;
     intro = false;
+    if (!wasIntro && Math.abs(pose.x - targetX) + Math.abs(pose.y - targetY) < .004) return;
     targetX = pose.x;
     targetY = pose.y;
     queue();

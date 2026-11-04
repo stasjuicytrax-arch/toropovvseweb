@@ -52,6 +52,9 @@ test('actual tilt interrupts the camera entrance and rendering stops once settle
   assert(Math.abs(last.x - .375) < .002);
   assert(Math.abs(last.y - .375) < .002);
   assert.equal(t.frames.size, 0);
+  for (let sample = 0; sample < 10; sample++) await t.orient(43, 3);
+  await t.orient(43.001, 3.001);
+  assert.equal(t.frames.size, 0, 'stable sensor samples must not wake the renderer');
   t.controller.destroy();
 });
 
