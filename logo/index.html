@@ -3,31 +3,19 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#102016">
-  <meta name="description" content="Тест глубины: сад сверху и логотип в центре.">
-  <title>Сад — тест глубины</title>
-  <link rel="preload" as="image" href="assets/garden-base.webp">
+  <meta name="theme-color" content="#f3f4f3">
+  <meta name="description" content="Объёмный логотип в минималистичном пространстве с перспективой от наклона телефона.">
+  <title>STAS TOROPOV — пространство</title>
   <link rel="preload" as="image" href="assets/logo.png">
-  <link rel="stylesheet" href="../style.css?v=4">
-  <link rel="stylesheet" href="garden.css?v=1">
-  <script src="../app.js?v=4" defer></script>
+  <link rel="stylesheet" href="space.css?v=2">
+  <script type="module" src="spatial.js?v=2"></script>
 </head>
 <body>
-  <main class="demo logo-scene">
-    <section class="scene" aria-label="Вид сверху в глубокий цветущий сад с логотипом в центре">
-      <div class="poster" role="img" aria-label="Сад и логотип STAS TOROPOV">
-        <img class="static-garden" src="assets/garden-base.webp" width="941" height="1672" alt="" fetchpriority="high">
-        <img class="static-mark" src="assets/logo.png" width="810" height="179" alt="">
-      </div>
-      <div class="world" aria-hidden="true" hidden>
-        <img class="scene-layer garden-floor" src="assets/garden-base.webp" width="941" height="1672" alt="" decoding="async" draggable="false">
-        <img class="scene-layer brand-mark" src="assets/logo.png" width="810" height="179" alt="" decoding="async" draggable="false">
-        <img class="scene-layer middle-leaves" src="assets/garden-middle.webp" width="941" height="1672" alt="" decoding="async" draggable="false">
-        <img class="scene-layer near-leaves" src="assets/garden-front.webp" width="941" height="1672" alt="" decoding="async" draggable="false">
-      </div>
-      <p id="scene-hint" class="sr-only">Наклони телефон, чтобы увидеть глубину сада.</p>
-      <button id="sensor-activation" class="sensor-activation" type="button" aria-label="Разрешить реакцию сада на наклон" hidden><span>Коснись сада</span></button>
-    </section>
+  <main id="stage" class="stage" tabindex="0" aria-label="Объёмный логотип STAS TOROPOV" aria-describedby="interaction-help">
+    <div id="fallback" class="fallback"><img src="assets/logo.png" width="810" height="179" alt="STAS TOROPOV" fetchpriority="high"></div>
+    <canvas id="space" class="space" role="img" aria-label="Металлический логотип и три объёмных портала на разной глубине" hidden></canvas>
+    <button id="sensor-activation" class="sensor-activation" type="button" aria-label="Разрешить изменение перспективы от наклона телефона" hidden><span>Коснись пространства</span></button>
+    <p id="interaction-help" class="sr-only">Наклони телефон, перемещай курсор или используй стрелки клавиатуры. Escape возвращает камеру в центр.</p>
     <p id="status" class="sr-only" role="status"></p>
   </main>
 </body>
