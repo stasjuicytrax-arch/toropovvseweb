@@ -105,6 +105,16 @@ test('permission is requested only on scene activation and hint disappears', asy
   assert(t.events.has('deviceorientation'));
 });
 
+test('a small three-degree tilt produces a clearly usable movement range', () => {
+  const t = setup();
+  t.orient(40, 0);
+  t.draw(3600);
+  t.orient(43, 3);
+  for (let time = 3616; time < 5000; time += 16) t.draw(time);
+  assert(+t.vars.get('--x') >= .37);
+  assert(+t.vars.get('--y') >= .37);
+});
+
 for (const permission of ['denied', 'error']) {
   test(`${permission} permission preserves fallback without repeated prompts`, async () => {
     const t = setup({ permission });

@@ -17,19 +17,14 @@ button, a { -webkit-tap-highlight-color: #283d6230; touch-action: manipulation; 
 a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 4px; }
 button:focus-visible, a:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
 .demo { position: relative; width: min(100%, 56.25svh); min-height: 100svh; margin: auto; isolation: isolate; }
-.intro { position: absolute; top: 0; left: 0; width: 100%; z-index: 5; padding: max(22px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) 0 max(16px, env(safe-area-inset-left)); text-align: center; }
-h1 { margin: 0; font-size: clamp(26px, 7.7vw, 38px); line-height: 1.05; letter-spacing: -.035em; font-weight: 650; text-wrap: balance; }
-.projects { display: grid; grid-template-columns: 1fr 1fr; gap: 0 12px; margin-top: 12px; }
-.projects a { display: grid; place-items: center; min-height: 44px; font-size: 13px; font-weight: 500; overflow-wrap: anywhere; }
-.projects a:hover { color: #101d35; text-decoration-thickness: 2px; }
 .scene { position: absolute; inset: 0; overflow: hidden; container-type: size; }
-.poster, .world { position: absolute; inset: 0; width: 100%; height: 100%; transform: scale(1.04); }
+.poster, .world { position: absolute; inset: 0; width: 100%; height: 100%; transform: scale(1.2); }
 .poster, .scene-layer { object-fit: cover; object-position: center; }
 .world { --unit: max(calc(100cqw / 1080), calc(100cqh / 1920)); pointer-events: none; }
 .scene-layer { position: absolute; inset: 0; width: 100%; height: 100%; transform: translate(calc(var(--x) * var(--amp-x) * var(--unit)), calc(var(--y) * var(--amp-y) * var(--unit))); }
-.landscape { --amp-x: 2; --amp-y: 2; z-index: 0; }
-.sofa-person { --amp-x: 6; --amp-y: 4; z-index: 1; }
-.foreground { --amp-x: 18; --amp-y: 10; z-index: 2; }
+.landscape { --amp-x: -24; --amp-y: -14; z-index: 0; }
+.sofa-person { --amp-x: 36; --amp-y: 24; z-index: 1; }
+.foreground { --amp-x: 84; --amp-y: 46; z-index: 2; }
 .scene.moving .scene-layer { will-change: transform; }
 .sensor-activation { position: absolute; inset: 0; z-index: 3; display: flex; align-items: flex-end; justify-content: center; background: transparent; border: 0; color: var(--ink); padding: 24px 16px max(24px, env(safe-area-inset-bottom)); font: inherit; font-size: 12px; line-height: 1.5; cursor: pointer; }
 .sensor-activation span { max-width: 100%; padding: 8px 14px; border-radius: 20px; background: #fff9ee; text-wrap: balance; text-align: center; }
@@ -38,10 +33,6 @@ h1 { margin: 0; font-size: clamp(26px, 7.7vw, 38px); line-height: 1.05; letter-s
 .sensor-activation:focus-visible { outline-offset: -5px; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
 @media (max-height: 680px) {
-  .intro { padding-top: max(12px, env(safe-area-inset-top)); }
-  h1 { font-size: 26px; }
-  .projects { margin-top: 4px; }
-  .projects a { font-size: 12px; }
   .sensor-activation { padding-bottom: max(12px, env(safe-area-inset-bottom)); }
 }
 @media (prefers-reduced-motion: reduce) { .scene-layer { transform: none; } }

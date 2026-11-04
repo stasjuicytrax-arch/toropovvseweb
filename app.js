@@ -44,7 +44,7 @@
         targetY = ready ? sensorY : 0;
       }
     }
-    const easing = 1 - Math.exp(-dt / 85);
+    const easing = 1 - Math.exp(-dt / 70);
     x += (targetX - x) * easing;
     y += (targetY - y) * easing;
     root.style.setProperty('--x', x.toFixed(4));
@@ -76,8 +76,8 @@
       say('Реакция на наклон включена.');
     }
     if (!baseline) baseline = { beta: event.beta, gamma: event.gamma };
-    const horizontal = delta(event.gamma, baseline.gamma) / 18;
-    const vertical = delta(event.beta, baseline.beta) / 18;
+    const horizontal = delta(event.gamma, baseline.gamma) / 8;
+    const vertical = delta(event.beta, baseline.beta) / 8;
     const angle = (screen.orientation?.angle ?? window.orientation ?? 0) * Math.PI / 180;
     sensorX = clamp(horizontal * Math.cos(angle) + vertical * Math.sin(angle));
     sensorY = clamp(vertical * Math.cos(angle) - horizontal * Math.sin(angle));
