@@ -1,0 +1,11 @@
+:root { --sky: #102016; --ink: #15301f; --accent: #e6f1c6; }
+.logo-scene .world, .logo-scene .poster { transform: scale(1.28); }
+.static-garden { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; }
+.logo-scene .brand-mark, .static-mark { position: absolute; inset: auto; top: 50%; left: 50%; width: 52%; height: auto; object-fit: contain; transform: translate(-50%, -50%); filter: drop-shadow(0 3px 5px #0008); }
+.logo-scene .garden-floor { --amp-x: -30; --amp-y: -18; z-index: 0; }
+.logo-scene .brand-mark { z-index: 1; transform: translate(calc(-50% + var(--x) * 8 * var(--unit)), calc(-50% + var(--y) * 6 * var(--unit))); }
+.logo-scene .middle-leaves { --amp-x: 48; --amp-y: 34; z-index: 2; }
+.logo-scene .near-leaves { --amp-x: 108; --amp-y: 66; z-index: 3; }
+.logo-scene .sensor-activation span { background: #e6f1c6; color: #15301f; }
+.logo-scene .sensor-activation:hover span { background: #fff9ee; }
+@media (prefers-reduced-motion: reduce) { .logo-scene .brand-mark { transform: translate(-50%, -50%); } }

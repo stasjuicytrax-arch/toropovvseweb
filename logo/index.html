@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#102016">
+  <meta name="description" content="Тест глубины: сад сверху и логотип в центре.">
+  <title>Сад — тест глубины</title>
+  <link rel="preload" as="image" href="assets/garden-base.webp">
+  <link rel="preload" as="image" href="assets/logo.png">
+  <link rel="stylesheet" href="../style.css?v=4">
+  <link rel="stylesheet" href="garden.css?v=1">
+  <script src="../app.js?v=4" defer></script>
+</head>
+<body>
+  <main class="demo logo-scene">
+    <section class="scene" aria-label="Вид сверху в глубокий цветущий сад с логотипом в центре">
+      <div class="poster" role="img" aria-label="Сад и логотип STAS TOROPOV">
+        <img class="static-garden" src="assets/garden-base.webp" width="941" height="1672" alt="" fetchpriority="high">
+        <img class="static-mark" src="assets/logo.png" width="810" height="179" alt="">
+      </div>
+      <div class="world" aria-hidden="true" hidden>
+        <img class="scene-layer garden-floor" src="assets/garden-base.webp" width="941" height="1672" alt="" decoding="async" draggable="false">
+        <img class="scene-layer brand-mark" src="assets/logo.png" width="810" height="179" alt="" decoding="async" draggable="false">
+        <img class="scene-layer middle-leaves" src="assets/garden-middle.webp" width="941" height="1672" alt="" decoding="async" draggable="false">
+        <img class="scene-layer near-leaves" src="assets/garden-front.webp" width="941" height="1672" alt="" decoding="async" draggable="false">
+      </div>
+      <p id="scene-hint" class="sr-only">Наклони телефон, чтобы увидеть глубину сада.</p>
+      <button id="sensor-activation" class="sensor-activation" type="button" aria-label="Разрешить реакцию сада на наклон" hidden><span>Коснись сада</span></button>
+    </section>
+    <p id="status" class="sr-only" role="status"></p>
+  </main>
+</body>
+</html>
