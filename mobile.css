@@ -19,9 +19,26 @@ body { margin: 0; }
 .filter-definitions { position: absolute; pointer-events: none; }
 .hero { position: relative; width: min(100%, 480px); height: 100svh; min-height: 480px; margin-inline: auto; background: var(--sky); }
 .portrait { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; }
-.identity { position: absolute; inset: max(42px, calc(env(safe-area-inset-top) + 18px)) 0 auto; display: flex; justify-content: center; }
+.identity { position: absolute; inset: max(42px, calc(env(safe-area-inset-top) + 18px)) 0 auto; display: flex; flex-direction: column; align-items: center; gap: 10px; }
 h1 { margin: 0; line-height: 0; }
 .wordmark { display: block; width: 218px; height: auto; opacity: .98; filter: drop-shadow(0 2px 10px #26313b1f); }
+.socials { display: flex; gap: 8px; }
+.socials a {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgb(15 22 18 / .55);
+  color: rgb(var(--glass-light));
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: rgb(var(--glass-light) / .12);
+  transition: background-color 160ms ease, color 160ms ease;
+}
+.socials svg { width: 21px; height: 21px; }
+.socials a:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+.socials a:active { background: rgb(var(--glass-light)); color: rgb(var(--glass-dark)); }
+@media (hover: hover) { .socials a:hover { background: rgb(var(--glass-light)); color: rgb(var(--glass-dark)); } }
 .projects {
   position: absolute;
   inset: auto 0 max(12px, env(safe-area-inset-bottom));
@@ -203,6 +220,7 @@ h1 { margin: 0; line-height: 0; }
 }
 @media (prefers-reduced-motion: reduce) {
   .project-action { transition: none; }
+  .socials a { transition: none; }
   .project-pagination::after { --project-stretch: 1; }
 }
 
@@ -220,7 +238,7 @@ h1 { margin: 0; line-height: 0; }
   .portrait { object-position: center top; }
   .identity {
     inset: clamp(32px, 6vh, 72px) var(--desktop-inset) auto auto;
-    justify-content: end;
+    align-items: end;
   }
   .wordmark { width: clamp(224px, 16vw, 312px); filter: drop-shadow(0 2px 12px #18231c66); }
   .projects {
