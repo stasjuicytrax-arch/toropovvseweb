@@ -23,5 +23,10 @@ buttons.forEach((button, index) => {
   });
 });
 track.addEventListener('scroll', updateActiveProject, { passive: true });
+track.addEventListener('focusin', (event) => {
+  if (event.target.matches('.project-link:focus-visible')) {
+    event.target.scrollIntoView({ behavior: 'instant', block: 'nearest', inline: 'center' });
+  }
+});
 updateActiveProject();
 pagination.hidden = false;
