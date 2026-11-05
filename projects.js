@@ -8,6 +8,8 @@ const buttons = [...pagination.querySelectorAll('button')];
 const hint = document.querySelector('.project-hint');
 const hintText = hint.querySelector('span');
 const portrait = document.querySelector('#portrait');
+const desktopLayout = matchMedia('(min-width: 960px) and (min-aspect-ratio: 4/3)');
+const needsEdgeOffsets = !CSS.supports('animation-timeline', 'view(inline 0px)');
 let activeIndex = 0;
 
 portrait.addEventListener('error', () => { portrait.hidden = true; }, { once: true });
@@ -16,7 +18,13 @@ function updateProjectPosition() {
   const scrollRange = track.scrollWidth - track.clientWidth;
   if (!scrollRange) return;
 
-  const progress = Math.max(0, Math.min(1, track.scrollLeft / scrollRange));
+  const scrollLeft = track.scrollLeft;
+  if (needsEdgeOffsets && desktopLayout.matches) {
+    const fadeOffsets = cards.map(card => scrollLeft - card.offsetLeft);
+    cards.forEach((card, index) => card.style.setProperty('--fade-offset', `${fadeOffsets[index]}px`));
+  }
+
+  const progress = Math.max(0, Math.min(1, scrollLeft / scrollRange));
   const position = progress * (cards.length - 1);
   const betweenDots = position % 1;
   const stretch = 1 + 1.15 * Math.sin(Math.PI * betweenDots);
@@ -44,6 +52,7 @@ buttons.forEach((button, index) => button.addEventListener('click', () => showPr
 previous.addEventListener('click', () => showProject(activeIndex - 1));
 next.addEventListener('click', () => showProject(activeIndex + 1));
 track.addEventListener('scroll', updateProjectPosition, { passive: true });
+new ResizeObserver(updateProjectPosition).observe(track);
 track.addEventListener('focusin', (event) => {
   if (event.target.matches('.project-link:focus-visible')) {
     event.target.scrollIntoView({ behavior: 'instant', block: 'nearest', inline: 'center' });
