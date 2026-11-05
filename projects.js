@@ -4,7 +4,10 @@ const pagination = document.querySelector('.project-pagination');
 const buttons = [...pagination.querySelectorAll('button')];
 const hint = document.querySelector('.project-hint');
 const hintText = hint.querySelector('span');
+const portrait = document.querySelector('#portrait');
 let activeIndex = 0;
+
+portrait.addEventListener('error', () => { portrait.hidden = true; }, { once: true });
 
 function updateActiveProject() {
   const scrollRange = track.scrollWidth - track.clientWidth;

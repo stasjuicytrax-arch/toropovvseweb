@@ -9,17 +9,12 @@
   <link rel="preload" as="image" href="assets/hero-mobile-v7.png">
   <link rel="preload" as="font" href="assets/fonts/onest-regular.woff2" type="font/woff2" crossorigin>
   <link rel="preload" as="font" href="assets/fonts/onest-semibold.woff2" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="mobile.css?v=6">
-  <script src="liquid-glass.js?v=2" defer></script>
-  <script src="projects.js?v=3" defer></script>
+  <link rel="stylesheet" href="mobile.css?v=7">
+  <script src="projects.js?v=4" defer></script>
 </head>
 <body>
   <svg class="filter-definitions" width="0" height="0" aria-hidden="true" focusable="false">
     <defs>
-      <filter id="liquid" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
-        <feImage id="liquid-map" x="0" y="0" width="100%" height="100%" preserveAspectRatio="none" result="map"/>
-        <feDisplacementMap in="SourceGraphic" in2="map" scale="60" xChannelSelector="R" yChannelSelector="G"/>
-      </filter>
       <symbol id="project-arrow" viewBox="0 0 16 16">
         <path d="M4.5 11.5 11.5 4.5M5 4.5h6.5V11" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
       </symbol>
@@ -38,7 +33,7 @@
       <nav class="project-track" id="project-track" aria-label="Проекты Стаса Торопова" aria-describedby="project-hint">
         <a class="project-link" href="https://stastoropov.ru/" aria-labelledby="host-title host-action" aria-describedby="host-description">
           <span class="glass" aria-hidden="true"></span>
-          <img class="project-thumb" src="assets/project-icon-host.svg" width="88" height="88" alt="">
+          <img class="project-thumb" src="assets/project-cover-host.jpg" width="88" height="88" alt="">
           <div class="project-copy">
             <h2 id="host-title">Стас Торопов</h2>
             <p class="project-description" id="host-description">Ведущий свадеб и корпоративов</p>
@@ -47,7 +42,7 @@
         </a>
         <a class="project-link" href="https://help-wedding.ru/" aria-labelledby="wedding-title wedding-action" aria-describedby="wedding-description">
           <span class="glass" aria-hidden="true"></span>
-          <img class="project-thumb" src="assets/project-icon-wedding.svg" width="88" height="88" alt="">
+          <img class="project-thumb" src="assets/project-cover-wedding.jpg" width="88" height="88" alt="">
           <div class="project-copy">
             <h2 id="wedding-title">В титрах</h2>
             <p class="project-description" id="wedding-description">Свадебное агентство</p>
@@ -56,7 +51,7 @@
         </a>
         <a class="project-link" href="https://st-event.com/" aria-labelledby="events-title events-action" aria-describedby="events-description">
           <span class="glass" aria-hidden="true"></span>
-          <img class="project-thumb project-thumb-logo" src="assets/project-icon-events.png" width="88" height="88" alt="">
+          <img class="project-thumb" src="assets/project-cover-events.jpg" width="88" height="88" alt="">
           <div class="project-copy">
             <h2 id="events-title">ST EVENT</h2>
             <p class="project-description" id="events-description">Корпоративы и деловые события</p>
@@ -65,7 +60,7 @@
         </a>
         <a class="project-link" href="https://karaokerave.ru/" aria-labelledby="karaoke-title karaoke-action" aria-describedby="karaoke-description">
           <span class="glass" aria-hidden="true"></span>
-          <img class="project-thumb project-thumb-logo" src="assets/project-icon-karaoke.svg" width="88" height="88" alt="">
+          <img class="project-thumb" src="assets/project-cover-karaoke.jpg" width="88" height="88" alt="">
           <div class="project-copy">
             <h2 id="karaoke-title">Караоке Рейв</h2>
             <p class="project-description" id="karaoke-description">Караоке с живым оркестром</p>
@@ -74,7 +69,7 @@
         </a>
         <a class="project-link" href="https://ngperm.ru/" aria-labelledby="newyear-title newyear-action" aria-describedby="newyear-description">
           <span class="glass" aria-hidden="true"></span>
-          <img class="project-thumb" src="assets/project-icon-newyear.svg" width="88" height="88" alt="">
+          <img class="project-thumb" src="assets/project-cover-newyear.jpg" width="88" height="88" alt="">
           <div class="project-copy">
             <h2 id="newyear-title">Новогодняя ночь</h2>
             <p class="project-description" id="newyear-description">31 декабря · WHITE HALL</p>
