@@ -29,13 +29,13 @@ h1 { margin: 0; line-height: 0; }
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background: rgb(15 22 18 / .55);
+  background: radial-gradient(circle, rgb(15 22 18 / .55) 17px, transparent 18px);
   color: rgb(var(--glass-light));
   touch-action: manipulation;
   -webkit-tap-highlight-color: rgb(var(--glass-light) / .12);
   transition: background-color 160ms ease, color 160ms ease;
 }
-.socials svg { width: 21px; height: 21px; }
+.socials svg { width: 18px; height: 18px; }
 .socials a:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
 .socials a:active { background: rgb(var(--glass-light)); color: rgb(var(--glass-dark)); }
 @media (hover: hover) { .socials a:hover { background: rgb(var(--glass-light)); color: rgb(var(--glass-dark)); } }
@@ -238,8 +238,10 @@ h1 { margin: 0; line-height: 0; }
   .portrait { object-position: center top; }
   .identity {
     inset: clamp(32px, 6vh, 72px) var(--desktop-inset) auto auto;
-    align-items: end;
+    align-items: center;
   }
+  .socials a { background: rgb(15 22 18 / .55); }
+  .socials svg { width: 21px; height: 21px; }
   .wordmark { width: clamp(224px, 16vw, 312px); filter: drop-shadow(0 2px 12px #18231c66); }
   .projects {
     inset: auto auto clamp(36px, 9vh, 96px) calc(var(--desktop-inset) - var(--track-gutter));
