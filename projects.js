@@ -1,5 +1,8 @@
 const track = document.querySelector('#project-track');
 const cards = [...track.querySelectorAll('.project-link')];
+const controls = document.querySelector('.project-controls');
+const previous = controls.querySelector('.project-prev');
+const next = controls.querySelector('.project-next');
 const pagination = document.querySelector('.project-pagination');
 const buttons = [...pagination.querySelectorAll('button')];
 const hint = document.querySelector('.project-hint');
@@ -26,16 +29,20 @@ function updateProjectPosition() {
   buttons[activeIndex].removeAttribute('aria-current');
   buttons[nextIndex].setAttribute('aria-current', 'true');
   const isLast = nextIndex === cards.length - 1;
+  previous.disabled = nextIndex === 0;
+  next.disabled = isLast;
   hintText.textContent = isLast ? 'Листай влево' : 'Листай вправо';
   hint.classList.toggle('project-hint-back', isLast);
   activeIndex = nextIndex;
 }
 
-buttons.forEach((button, index) => {
-  button.addEventListener('click', () => {
-    cards[index].scrollIntoView({ block: 'nearest', inline: 'center' });
-  });
-});
+function showProject(index) {
+  cards[index]?.scrollIntoView({ block: 'nearest', inline: 'center' });
+}
+
+buttons.forEach((button, index) => button.addEventListener('click', () => showProject(index)));
+previous.addEventListener('click', () => showProject(activeIndex - 1));
+next.addEventListener('click', () => showProject(activeIndex + 1));
 track.addEventListener('scroll', updateProjectPosition, { passive: true });
 track.addEventListener('focusin', (event) => {
   if (event.target.matches('.project-link:focus-visible')) {
@@ -43,4 +50,4 @@ track.addEventListener('focusin', (event) => {
   }
 });
 updateProjectPosition();
-pagination.hidden = false;
+controls.hidden = false;
