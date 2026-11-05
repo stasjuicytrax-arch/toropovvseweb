@@ -9,8 +9,9 @@
   <link rel="preload" as="image" href="assets/hero-mobile.jpg">
   <link rel="preload" as="font" href="assets/fonts/onest-regular.woff2" type="font/woff2" crossorigin>
   <link rel="preload" as="font" href="assets/fonts/onest-semibold.woff2" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="mobile.css?v=4">
+  <link rel="stylesheet" href="mobile.css?v=5">
   <script src="liquid-glass.js?v=1" defer></script>
+  <script src="projects.js?v=1" defer></script>
 </head>
 <body>
   <svg class="filter-definitions" width="0" height="0" aria-hidden="true" focusable="false">
@@ -29,44 +30,52 @@
     <header class="identity">
       <h1><img class="wordmark" src="assets/wordmark.png" width="810" height="179" alt="Стас Торопов"></h1>
     </header>
-    <nav class="projects" aria-label="Выбрать направление">
-      <a class="project-link" href="https://stastoropov.ru/" aria-labelledby="host-title host-action" aria-describedby="host-description" style="--step:0">
-        <span class="glass" aria-hidden="true"></span>
-        <div class="project-heading">
-          <img class="project-thumb project-thumb-host" src="assets/project-host.webp" width="48" height="48" alt="">
-          <h2 id="host-title">Стас Торопов</h2>
-        </div>
-        <p class="project-description" id="host-description">Ведущий свадеб и корпоративов</p>
-        <span class="project-action" id="host-action">На сайт<svg viewBox="0 0 16 16" aria-hidden="true"><use href="#project-arrow"/></svg></span>
-      </a>
-      <a class="project-link" href="https://help-wedding.ru/" aria-labelledby="wedding-title wedding-action" aria-describedby="wedding-description" style="--step:1">
-        <span class="glass" aria-hidden="true"></span>
-        <div class="project-heading">
-          <img class="project-thumb" src="assets/project-wedding.webp" width="48" height="48" alt="">
-          <h2 id="wedding-title">В титрах</h2>
-        </div>
-        <p class="project-description" id="wedding-description">Свадебное агентство</p>
-        <span class="project-action" id="wedding-action">На сайт<svg viewBox="0 0 16 16" aria-hidden="true"><use href="#project-arrow"/></svg></span>
-      </a>
-      <a class="project-link" href="https://st-event.com/" aria-labelledby="events-title events-action" aria-describedby="events-description" style="--step:2">
-        <span class="glass" aria-hidden="true"></span>
-        <div class="project-heading">
-          <img class="project-thumb" src="assets/project-events.webp" width="48" height="48" alt="">
-          <h2 id="events-title">ST EVENT</h2>
-        </div>
-        <p class="project-description" id="events-description">Корпоративы и деловые события</p>
-        <span class="project-action" id="events-action">На сайт<svg viewBox="0 0 16 16" aria-hidden="true"><use href="#project-arrow"/></svg></span>
-      </a>
-      <a class="project-link" href="https://karaokerave.ru/" aria-labelledby="karaoke-title karaoke-action" aria-describedby="karaoke-description" style="--step:3">
-        <span class="glass" aria-hidden="true"></span>
-        <div class="project-heading">
-          <img class="project-thumb project-thumb-karaoke" src="assets/project-karaoke.webp" width="48" height="48" alt="">
-          <h2 id="karaoke-title">Караоке Рейв</h2>
-        </div>
-        <p class="project-description" id="karaoke-description">Караоке с живым оркестром</p>
-        <span class="project-action" id="karaoke-action">На сайт<svg viewBox="0 0 16 16" aria-hidden="true"><use href="#project-arrow"/></svg></span>
-      </a>
-    </nav>
+    <div class="projects">
+      <nav class="project-track" id="project-track" aria-label="Проекты Стаса Торопова">
+        <a class="project-link" href="https://stastoropov.ru/" aria-labelledby="host-title host-action" aria-describedby="host-description">
+          <span class="glass" aria-hidden="true"></span>
+          <img class="project-thumb project-thumb-host" src="assets/project-host.webp" width="88" height="88" alt="">
+          <div class="project-copy">
+            <h2 id="host-title">Стас Торопов</h2>
+            <p class="project-description" id="host-description">Ведущий свадеб и корпоративов</p>
+          </div>
+          <span class="project-action" id="host-action">На сайт<svg viewBox="0 0 16 16" aria-hidden="true"><use href="#project-arrow"/></svg></span>
+        </a>
+        <a class="project-link" href="https://help-wedding.ru/" aria-labelledby="wedding-title wedding-action" aria-describedby="wedding-description">
+          <span class="glass" aria-hidden="true"></span>
+          <img class="project-thumb" src="assets/project-wedding.webp" width="88" height="88" alt="">
+          <div class="project-copy">
+            <h2 id="wedding-title">В титрах</h2>
+            <p class="project-description" id="wedding-description">Свадебное агентство</p>
+          </div>
+          <span class="project-action" id="wedding-action">На сайт<svg viewBox="0 0 16 16" aria-hidden="true"><use href="#project-arrow"/></svg></span>
+        </a>
+        <a class="project-link" href="https://st-event.com/" aria-labelledby="events-title events-action" aria-describedby="events-description">
+          <span class="glass" aria-hidden="true"></span>
+          <img class="project-thumb" src="assets/project-events.webp" width="88" height="88" alt="">
+          <div class="project-copy">
+            <h2 id="events-title">ST EVENT</h2>
+            <p class="project-description" id="events-description">Корпоративы и деловые события</p>
+          </div>
+          <span class="project-action" id="events-action">На сайт<svg viewBox="0 0 16 16" aria-hidden="true"><use href="#project-arrow"/></svg></span>
+        </a>
+        <a class="project-link" href="https://karaokerave.ru/" aria-labelledby="karaoke-title karaoke-action" aria-describedby="karaoke-description">
+          <span class="glass" aria-hidden="true"></span>
+          <img class="project-thumb project-thumb-karaoke" src="assets/project-karaoke.webp" width="88" height="88" alt="">
+          <div class="project-copy">
+            <h2 id="karaoke-title">Караоке Рейв</h2>
+            <p class="project-description" id="karaoke-description">Караоке с живым оркестром</p>
+          </div>
+          <span class="project-action" id="karaoke-action">На сайт<svg viewBox="0 0 16 16" aria-hidden="true"><use href="#project-arrow"/></svg></span>
+        </a>
+      </nav>
+      <div class="project-pagination" role="group" aria-label="Переключить проект" hidden>
+        <button type="button" aria-controls="project-track" aria-label="Показать проект «Стас Торопов»" aria-current="true"></button>
+        <button type="button" aria-controls="project-track" aria-label="Показать проект «В титрах»"></button>
+        <button type="button" aria-controls="project-track" aria-label="Показать проект ST EVENT"></button>
+        <button type="button" aria-controls="project-track" aria-label="Показать проект «Караоке Рейв»"></button>
+      </div>
+    </div>
   </main>
 </body>
 </html>
