@@ -2,16 +2,15 @@
 <html lang="ru">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#8d9cb8">
   <meta name="description" content="Стас Торопов: ведущий, свадебное агентство «В титрах», ST EVENT и Караоке Рейв.">
   <title>Стас Торопов — проекты</title>
   <link rel="preload" as="image" href="assets/hero-mobile.jpg">
   <link rel="preload" as="font" href="assets/fonts/onest-regular.woff2" type="font/woff2" crossorigin>
   <link rel="preload" as="font" href="assets/fonts/onest-semibold.woff2" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="mobile.css?v=3">
+  <link rel="stylesheet" href="mobile.css?v=4">
   <script src="liquid-glass.js?v=1" defer></script>
-  <script src="contact.js?v=1" defer></script>
 </head>
 <body>
   <svg class="filter-definitions" width="0" height="0" aria-hidden="true" focusable="false">
@@ -29,68 +28,45 @@
     <img id="portrait" class="portrait" src="assets/hero-mobile.jpg" width="1080" height="1920" alt="Стас Торопов на диване среди цветов у моря" fetchpriority="high" decoding="async">
     <header class="identity">
       <h1><img class="wordmark" src="assets/wordmark.png" width="810" height="179" alt="Стас Торопов"></h1>
-      <a class="contact-trigger" id="contact-trigger" href="https://t.me/stastoropov">
-        <span class="glass glass-nav" aria-hidden="true"></span>
-        <span>Написать мне</span>
-        <svg viewBox="0 0 16 16" aria-hidden="true"><use href="#project-arrow"/></svg>
-      </a>
     </header>
     <nav class="projects" aria-label="Выбрать направление">
-      <a class="project-link" href="https://stastoropov.ru/" aria-label="Стас Торопов — ведущий и шоумен" style="--step:0">
-        <span class="glass glass-nav" aria-hidden="true"></span>
-        <span class="edge-light" aria-hidden="true"></span>
-        <span class="project-copy"><span class="project-name">Ведущий</span><span class="project-detail">Стас Торопов</span></span>
-        <span class="project-arrow" aria-hidden="true"><svg viewBox="0 0 16 16"><use href="#project-arrow"/></svg></span>
+      <a class="project-link" href="https://stastoropov.ru/" aria-labelledby="host-title host-action" aria-describedby="host-description" style="--step:0">
+        <span class="glass" aria-hidden="true"></span>
+        <div class="project-heading">
+          <img class="project-thumb project-thumb-host" src="assets/project-host.webp" width="48" height="48" alt="">
+          <h2 id="host-title">Стас Торопов</h2>
+        </div>
+        <p class="project-description" id="host-description">Ведущий свадеб и корпоративов</p>
+        <span class="project-action" id="host-action">На сайт<svg viewBox="0 0 16 16" aria-hidden="true"><use href="#project-arrow"/></svg></span>
       </a>
-      <a class="project-link" href="https://help-wedding.ru/" aria-label="В титрах — свадебное агентство" style="--step:1">
-        <span class="glass glass-nav" aria-hidden="true"></span>
-        <span class="edge-light" aria-hidden="true"></span>
-        <span class="project-copy"><span class="project-name">Свадьбы</span><span class="project-detail">В титрах</span></span>
-        <span class="project-arrow" aria-hidden="true"><svg viewBox="0 0 16 16"><use href="#project-arrow"/></svg></span>
+      <a class="project-link" href="https://help-wedding.ru/" aria-labelledby="wedding-title wedding-action" aria-describedby="wedding-description" style="--step:1">
+        <span class="glass" aria-hidden="true"></span>
+        <div class="project-heading">
+          <img class="project-thumb" src="assets/project-wedding.webp" width="48" height="48" alt="">
+          <h2 id="wedding-title">В титрах</h2>
+        </div>
+        <p class="project-description" id="wedding-description">Свадебное агентство</p>
+        <span class="project-action" id="wedding-action">На сайт<svg viewBox="0 0 16 16" aria-hidden="true"><use href="#project-arrow"/></svg></span>
       </a>
-      <a class="project-link" href="https://st-event.com/" aria-label="ST EVENT — event-агентство" style="--step:2">
-        <span class="glass glass-nav" aria-hidden="true"></span>
-        <span class="edge-light" aria-hidden="true"></span>
-        <span class="project-copy"><span class="project-name">События</span><span class="project-detail">ST EVENT</span></span>
-        <span class="project-arrow" aria-hidden="true"><svg viewBox="0 0 16 16"><use href="#project-arrow"/></svg></span>
+      <a class="project-link" href="https://st-event.com/" aria-labelledby="events-title events-action" aria-describedby="events-description" style="--step:2">
+        <span class="glass" aria-hidden="true"></span>
+        <div class="project-heading">
+          <img class="project-thumb" src="assets/project-events.webp" width="48" height="48" alt="">
+          <h2 id="events-title">ST EVENT</h2>
+        </div>
+        <p class="project-description" id="events-description">Корпоративы и деловые события</p>
+        <span class="project-action" id="events-action">На сайт<svg viewBox="0 0 16 16" aria-hidden="true"><use href="#project-arrow"/></svg></span>
       </a>
-      <a class="project-link" href="https://karaokerave.ru/" aria-label="Караоке Рейв — караоке с оркестром" style="--step:3">
-        <span class="glass glass-nav" aria-hidden="true"></span>
-        <span class="edge-light" aria-hidden="true"></span>
-        <span class="project-copy"><span class="project-name">Караоке</span><span class="project-detail">С оркестром</span></span>
-        <span class="project-arrow" aria-hidden="true"><svg viewBox="0 0 16 16"><use href="#project-arrow"/></svg></span>
+      <a class="project-link" href="https://karaokerave.ru/" aria-labelledby="karaoke-title karaoke-action" aria-describedby="karaoke-description" style="--step:3">
+        <span class="glass" aria-hidden="true"></span>
+        <div class="project-heading">
+          <img class="project-thumb project-thumb-karaoke" src="assets/project-karaoke.webp" width="48" height="48" alt="">
+          <h2 id="karaoke-title">Караоке Рейв</h2>
+        </div>
+        <p class="project-description" id="karaoke-description">Караоке с живым оркестром</p>
+        <span class="project-action" id="karaoke-action">На сайт<svg viewBox="0 0 16 16" aria-hidden="true"><use href="#project-arrow"/></svg></span>
       </a>
     </nav>
   </main>
-  <dialog class="contact-dialog" id="contact-dialog" aria-labelledby="contact-title" aria-describedby="contact-hint">
-    <div class="contact-panel">
-      <span class="edge-light" aria-hidden="true"></span>
-      <header class="contact-header">
-        <h2 id="contact-title">Написать мне</h2>
-        <button class="contact-close" type="button" aria-label="Закрыть окно" autofocus>
-          <svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4 4 8 8M12 4l-8 8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-        </button>
-      </header>
-      <form class="contact-form" method="dialog">
-        <label>
-          <span>Имя</span>
-          <input type="text" name="name" autocomplete="name" maxlength="70" required>
-        </label>
-        <label>
-          <span>Телефон</span>
-          <input type="tel" name="phone" autocomplete="tel" maxlength="32" required>
-        </label>
-        <label>
-          <span>Ваше сообщение</span>
-          <textarea name="message" rows="3" maxlength="500" required></textarea>
-        </label>
-        <button class="contact-submit" type="submit">
-          <span>Отправить в Telegram</span>
-          <svg viewBox="0 0 16 16" aria-hidden="true"><use href="#project-arrow"/></svg>
-        </button>
-        <p class="contact-hint" id="contact-hint">Откроется чат со Стасом с готовым сообщением.</p>
-      </form>
-    </div>
-  </dialog>
 </body>
 </html>
