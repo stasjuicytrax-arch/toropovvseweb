@@ -9,12 +9,18 @@ let activeIndex = 0;
 
 portrait.addEventListener('error', () => { portrait.hidden = true; }, { once: true });
 
-function updateActiveProject() {
+function updateProjectPosition() {
   const scrollRange = track.scrollWidth - track.clientWidth;
   if (!scrollRange) return;
 
   const progress = Math.max(0, Math.min(1, track.scrollLeft / scrollRange));
-  const nextIndex = Math.round(progress * (cards.length - 1));
+  const position = progress * (cards.length - 1);
+  const betweenDots = position % 1;
+  const stretch = 1 + 1.15 * Math.sin(Math.PI * betweenDots);
+  pagination.style.setProperty('--project-position', position);
+  pagination.style.setProperty('--project-stretch', stretch);
+
+  const nextIndex = Math.round(position);
   if (nextIndex === activeIndex) return;
 
   buttons[activeIndex].removeAttribute('aria-current');
@@ -30,11 +36,11 @@ buttons.forEach((button, index) => {
     cards[index].scrollIntoView({ block: 'nearest', inline: 'center' });
   });
 });
-track.addEventListener('scroll', updateActiveProject, { passive: true });
+track.addEventListener('scroll', updateProjectPosition, { passive: true });
 track.addEventListener('focusin', (event) => {
   if (event.target.matches('.project-link:focus-visible')) {
     event.target.scrollIntoView({ behavior: 'instant', block: 'nearest', inline: 'center' });
   }
 });
-updateActiveProject();
+updateProjectPosition();
 pagination.hidden = false;
