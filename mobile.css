@@ -27,6 +27,21 @@ h1 { margin: 0; line-height: 0; }
   inset: auto 0 max(12px, env(safe-area-inset-bottom));
   padding-bottom: 44px;
 }
+.project-hint {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  width: max-content;
+  margin: 0 8% 0 auto;
+  padding: 5px 10px;
+  border-radius: 99px;
+  background: rgb(15 22 18 / .78);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 18px;
+}
+.project-hint svg { width: 15px; height: 15px; }
+.project-hint-back svg { rotate: 180deg; }
 .project-track {
   display: flex;
   gap: 12px;
@@ -43,7 +58,7 @@ h1 { margin: 0; line-height: 0; }
   grid-template-columns: var(--thumb-size) minmax(0, 1fr);
   grid-template-rows: 1fr auto;
   gap: 14px;
-  align-items: center;
+  align-items: start;
   min-width: 0;
   padding: 18px;
   border-radius: var(--tile-radius);
@@ -57,33 +72,39 @@ h1 { margin: 0; line-height: 0; }
 .glass {
   position: absolute;
   inset: 0;
+  z-index: 0;
+  isolation: isolate;
   border-radius: inherit;
   pointer-events: none;
   background: rgb(var(--glass-dark) / .91);
-  box-shadow: inset 0 1px 0 rgb(var(--glass-light) / .42),
-    inset 0 0 0 1px rgb(var(--glass-light) / .20),
-    inset 0 -1px 0 rgb(var(--glass-light) / .13),
-    0 14px 28px -17px #101712;
+  box-shadow: inset 1px 1px 1px rgb(var(--glass-light) / .64),
+    inset -1px -1px 1px rgb(var(--glass-light) / .34),
+    inset 0 0 0 1px rgb(var(--glass-light) / .13),
+    inset 0 0 18px rgb(var(--glass-light) / .12),
+    0 12px 26px -12px rgb(var(--glass-dark) / .65);
 }
 @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
   .glass {
-    background: linear-gradient(145deg, rgb(var(--glass-dark) / .57), rgb(15 22 18 / .74));
-    -webkit-backdrop-filter: blur(18px) saturate(1.24);
-    backdrop-filter: blur(18px) saturate(1.24);
+    background: rgb(var(--glass-dark) / .36);
+    -webkit-backdrop-filter: blur(10px) saturate(1.4) brightness(1.05);
+    backdrop-filter: blur(10px) saturate(1.4) brightness(1.05);
   }
-  .glass-svg .glass { backdrop-filter: url(#liquid) blur(18px) saturate(1.24); }
+  .glass-svg .glass {
+    background: rgb(var(--glass-dark) / .30);
+    backdrop-filter: url(#liquid) blur(2px) saturate(1.4) brightness(1.05);
+  }
 }
-.glass ~ * { position: relative; }
+.glass ~ * { position: relative; z-index: 1; }
 .project-thumb {
   display: block;
   width: var(--thumb-size);
   height: var(--thumb-size);
   border-radius: 17px;
-  object-fit: cover;
-  background: #343d36;
+  object-fit: contain;
+  background: #111513;
 }
-.project-thumb-host { object-position: center 28%; }
-.project-thumb-karaoke { object-position: center 35%; }
+.project-thumb-logo { padding: 10px; }
+.project-copy { text-shadow: 0 1px 3px #10150e, 0 2px 12px #10150ec9; }
 .project-copy h2 {
   margin: 0;
   font-size: clamp(20px, 5.8vw, 24px);
