@@ -226,14 +226,11 @@ h1 { margin: 0; line-height: 0; }
 
 @media (min-width: 960px) and (min-aspect-ratio: 4/3) {
   .hero {
-    --desktop-inset: clamp(36px, 4.5vw, 88px);
-    --track-gutter: 32px;
-    --card-width: clamp(300px, 27vw, 420px);
-    --track-width: calc(var(--card-width) + 2 * var(--track-gutter));
-    --tile-radius: 28px;
-    --thumb-size: clamp(76px, 6.5vw, 100px);
+    --desktop-inset: clamp(24px, 3vw, 64px);
+    --tile-radius: 24px;
+    --thumb-size: clamp(48px, 4.2vw, 72px);
     width: 100%;
-    min-height: 420px;
+    min-height: 540px;
   }
   .portrait { object-position: center top; }
   .identity {
@@ -246,58 +243,26 @@ h1 { margin: 0; line-height: 0; }
   .socials svg { width: 21px; height: 21px; }
   .wordmark { width: clamp(224px, 16vw, 312px); filter: drop-shadow(0 2px 12px #18231c66); }
   .projects {
-    inset: auto auto clamp(36px, 9vh, 96px) calc(var(--desktop-inset) - var(--track-gutter));
-    width: var(--track-width);
+    inset: auto var(--desktop-inset) clamp(20px, 3vh, 40px);
+    padding-bottom: 0;
   }
-  .project-track { position: relative; gap: 34px; padding-inline: var(--track-gutter); }
-  .project-hint { margin-inline: var(--track-gutter) auto; }
-  .projects:has(.project-controls:not([hidden])) .project-hint { display: none; }
-  .project-link > .glass, .project-panel {
-    mask-image: linear-gradient(to right, transparent, #000 var(--track-gutter), #000 calc(100% - var(--track-gutter)), transparent);
-    mask-size: var(--track-width) 100%;
-    mask-position: var(--fade-offset, calc(0px - var(--track-gutter))) 0;
-    mask-repeat: no-repeat;
-  }
-  @supports (animation-timeline: view(inline 0px)) {
-    .project-link > .glass, .project-panel {
-      animation: desktop-edge-fade auto linear both;
-      animation-timeline: view(inline 0px);
-    }
-    @keyframes desktop-edge-fade {
-      from { mask-position: calc(0px - var(--track-width)) 0; }
-      to { mask-position: var(--card-width) 0; }
-    }
-  }
-  @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-    .glass {
-      background: linear-gradient(145deg, rgb(var(--glass-dark) / .25), rgb(15 22 18 / .43));
-      -webkit-backdrop-filter: blur(5px) saturate(1.2);
-      backdrop-filter: blur(5px) saturate(1.2);
-    }
-  }
-  .project-panel { gap: 16px; padding: clamp(18px, 1.6vw, 24px); }
-  .project-thumb { border-radius: 18px; }
-  .project-copy { text-shadow: 0 1px 3px #10150ed9, 0 2px 10px #10150eab; }
-  .project-copy h2 { font-size: clamp(22px, 1.55vw, 28px); }
-  .project-description { font-size: 15px; }
-  .project-action { min-height: 44px; }
-  .project-controls:not([hidden]) { justify-content: start; gap: 8px; padding-inline: var(--track-gutter); }
-  .project-pagination { --dot-target: 36px; }
-  .project-pagination button { height: 44px; }
-  .project-step {
+  .project-track {
     display: grid;
-    place-items: center;
-    width: 44px;
-    height: 44px;
-    padding: 0;
-    border: 0;
-    border-radius: 50%;
-    background: rgb(15 22 18 / .76);
-    color: inherit;
-    cursor: pointer;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: clamp(10px, 1.1vw, 20px);
+    padding: 4px;
+    overflow: visible;
+    scroll-snap-type: none;
   }
-  .project-step svg { width: 20px; height: 20px; }
-  .project-prev svg { rotate: 180deg; }
-  .project-step:disabled { color: rgb(var(--glass-light) / .46); cursor: default; }
-  .project-step:focus-visible { outline: 2px solid currentColor; outline-offset: -4px; }
+  .project-hint, .project-controls:not([hidden]) { display: none; }
+  .project-panel {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto 1fr auto;
+    gap: 12px;
+    padding: clamp(14px, 1.3vw, 22px);
+  }
+  .project-thumb { border-radius: 12px; }
+  .project-copy h2 { min-height: 2.16em; font-size: clamp(17px, 1.4vw, 24px); }
+  .project-description { font-size: clamp(13px, 1vw, 15px); }
+  .project-action { grid-column: 1; min-height: 40px; }
 }
