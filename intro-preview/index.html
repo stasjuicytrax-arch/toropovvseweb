@@ -8,11 +8,21 @@
   <title>Стас Торопов — видеоинтро</title>
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../mobile.css?v=14">
-  <link rel="stylesheet" href="intro.css?v=6">
+  <link rel="stylesheet" href="intro.css?v=7">
+  <link rel="preload" as="image" href="portrait-v2.jpg" fetchpriority="high">
+  <script>
+    document.documentElement.classList.add('portrait-loading');
+    setTimeout(() => document.documentElement.classList.remove('portrait-loading'), 8000);
+  </script>
   <script src="../projects.js?v=8" defer></script>
-  <script type="module" src="intro.js?v=6"></script>
+  <script type="module" src="intro.js?v=7"></script>
 </head>
 <body>
+  <div class="portrait-preloader" role="status">
+    <img src="../assets/wordmark.png" width="810" height="179" alt="">
+    <span>Загрузка…</span>
+    <span class="preloader-line" aria-hidden="true"></span>
+  </div>
   <svg class="filter-definitions" width="0" height="0" aria-hidden="true" focusable="false">
     <defs>
       <symbol id="project-arrow" viewBox="0 0 16 16">
@@ -30,7 +40,7 @@
       <div class="shot">
         <img class="intro-portrait" id="portrait" src="portrait-v2.jpg" width="1080" height="1920" alt="Стас Торопов в очках" fetchpriority="high">
         <div class="lens-window" id="lens-window" aria-hidden="true" hidden>
-          <video id="reel" src="reel-lenses.mp4" width="512" height="248" muted playsinline preload="none" loop></video>
+          <video id="reel" src="reel-lenses-clean.mp4" width="512" height="248" muted playsinline preload="none" loop></video>
           <canvas id="reflection" width="306" height="164" hidden></canvas>
         </div>
       </div>

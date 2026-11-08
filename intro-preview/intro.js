@@ -47,10 +47,15 @@ function paintReflection() {
 }
 
 function queueReflection() {
-  if (!glass || !sampleContext || pendingFrame !== null || document.hidden || reel.paused) return;
+  if (pendingFrame !== null || document.hidden || reel.paused) return;
+  if ((!glass || !sampleContext) && lens.classList.contains('is-playing')) return;
+
   const nextFrame = () => {
     pendingFrame = null;
-    paintReflection();
+    if (reel.readyState >= 2 && reel.currentTime > 0) {
+      paintReflection();
+      lens.classList.add('is-playing');
+    }
     queueReflection();
   };
   pendingFrame = hasVideoFrameCallback ? reel.requestVideoFrameCallback(nextFrame) : setTimeout(nextFrame, 34);
@@ -83,17 +88,16 @@ function syncPlayback() {
   });
 }
 
-reel.addEventListener('playing', () => {
-  paintReflection();
-  lens.classList.add('is-playing');
-  queueReflection();
-});
+reel.addEventListener('playing', queueReflection);
 reel.addEventListener('pause', cancelReflection);
 reel.addEventListener('error', hideReflection);
 document.addEventListener('visibilitychange', syncPlayback);
 reducedMotion.addEventListener('change', syncPlayback);
 
-portrait.decode().then(() => {
-  photoReady = true;
-  syncPlayback();
-}).catch(hideReflection);
+portrait.decode()
+  .then(() => { photoReady = true; })
+  .catch(hideReflection)
+  .finally(() => {
+    document.documentElement.classList.replace('portrait-loading', 'portrait-ready');
+    syncPlayback();
+  });
