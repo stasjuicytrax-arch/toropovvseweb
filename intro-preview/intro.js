@@ -3,28 +3,24 @@ const stage = document.querySelector('#stage');
 const portrait = document.querySelector('#portrait');
 const reel = document.querySelector('#reel');
 const scene = document.querySelector('#scene');
-const identity = document.querySelector('#identity');
-const projects = document.querySelector('#projects');
-const caption = document.querySelector('#caption');
+const heroContent = document.querySelector('#hero-content');
 const skip = document.querySelector('#skip');
 const advance = document.querySelector('#advance');
-const replay = document.querySelector('#replay');
 const context = scene.getContext('2d', { alpha: false });
-const wide = matchMedia('(min-width: 900px) and (orientation: landscape)');
-const scrollMode = matchMedia('(min-width: 900px) and (orientation: landscape) and (pointer: fine)');
+const wide = matchMedia('(min-width: 960px) and (min-aspect-ratio: 4/3)');
+const scrollMode = matchMedia('(min-width: 960px) and (min-aspect-ratio: 4/3) and (pointer: fine)');
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
 
-// Curves traced inside the original frames. Coordinates are in the 1080 × 1920 photo.
+// Both contours are traced inside the tilted frames in the supplied photo.
 const lenses = new Path2D();
-lenses.addPath(new Path2D('M 46 111 C 49 78 67 57 103 51 C 135 45 197 46 228 54 C 255 61 273 74 268 97 C 262 128 247 163 222 187 C 193 215 159 224 121 214 C 86 206 59 188 49 155 C 44 140 44 125 46 111 Z'));
-lenses.addPath(new Path2D('M 333 96 C 333 75 350 63 379 59 C 415 54 475 54 499 66 C 531 79 545 105 543 140 C 540 182 520 207 484 221 C 456 232 420 230 397 217 C 366 201 346 168 337 134 C 333 119 331 106 333 96 Z'));
+lenses.addPath(new Path2D('M 35 80 C 36 58 45 38 63 33 C 84 27 113 33 144 44 C 161 50 176 57 173 72 C 170 92 155 117 137 131 C 116 147 92 151 71 141 C 47 130 34 107 35 80 Z'));
+lenses.addPath(new Path2D('M 211 92 C 216 82 235 85 260 91 C 286 97 310 106 325 120 C 339 133 342 151 331 167 C 321 184 299 192 276 189 C 253 186 236 175 225 157 C 214 139 211 111 211 92 Z'));
 
-const lensOrigin = { x: 270, y: 800 };
-const lensBounds = { left: 314, right: 815, top: 844, bottom: 1030 };
-const cameraPoint = { x: 419, y: 923 };
+const lensOrigin = { x: 440, y: 600 };
+const lensBounds = { left: 473, right: 779, top: 628, bottom: 792 };
+const cameraPoint = { x: 540, y: 684 };
 const waitBeforePullback = 3.2;
 const pullbackDuration = 1120;
-const reflectionDuration = 4200;
 const clamp = (value, low, high) => Math.min(high, Math.max(low, value));
 const mix = (start, end, amount) => start + (end - start) * amount;
 const smooth = value => value * value * (3 - 2 * value);
@@ -32,36 +28,38 @@ const smooth = value => value * value * (3 - 2 * value);
 let geometry;
 let progress = 1;
 let active = false;
+let skipped = false;
 let transitionAt = null;
-let reflectedAt = null;
 let frame = 0;
 let loadTimer = 0;
 let playRequest = 0;
 let photoReady = false;
-let focusProjectsOnReveal = false;
+let focusHeroOnReveal = false;
+let lastPaint = -Infinity;
 
 function measure() {
   const { width, height } = stage.getBoundingClientRect();
   const dpr = Math.min(devicePixelRatio || 1, 1.6);
   const isWide = wide.matches;
-  const eyeLine = height * (isWide ? .43 : .45);
-  const endScale = Math.max((height - eyeLine) / (1920 - 930), isWide ? height / 1540 : width / 1080);
-  const endX = width * (isWide ? .55 : .5) - 540 * endScale;
-  const endY = eyeLine - 930 * endScale;
+  const eyeLine = height * (isWide ? .40 : .41);
+  const endScale = Math.max(eyeLine / 708, (height - eyeLine) / (1920 - 708), isWide ? height / 1300 : width / 1080);
+  const endX = width / 2 - 598 * endScale;
+  const endY = eyeLine - 708 * endScale;
 
   geometry = {
     width, height, dpr, endScale, endX, endY,
-    startScale: Math.max(width / 178, height / 112) * 1.25,
+    startScale: Math.max(width / 98, height / 68) * 1.22,
     travel: scrollMode.matches ? Math.min(480, Math.round(height * .64)) : 0,
   };
   scene.width = Math.max(1, Math.round(width * dpr));
   scene.height = Math.max(1, Math.round(height * dpr));
+  lastPaint = -Infinity;
   updateTravel();
   scheduleFrame();
 }
 
 function updateTravel() {
-  experience.style.setProperty('--travel', `${active ? geometry.travel : 0}px`);
+  experience.style.setProperty('--travel', `${active && !skipped ? geometry.travel : 0}px`);
 }
 
 function setState(state) {
@@ -70,17 +68,14 @@ function setState(state) {
   const previousFocus = document.activeElement;
 
   stage.dataset.state = state;
-  identity.hidden = !showPortrait;
-  projects.hidden = !showPortrait;
-  caption.hidden = !showPortrait;
+  heroContent.hidden = !showPortrait;
   skip.hidden = showPortrait;
-  advance.hidden = state !== 'film' || !scrollMode.matches;
-  replay.hidden = !showPortrait || reducedMotion.matches;
+  advance.hidden = showPortrait || state === 'loading' || !scrollMode.matches;
 
-  if (showPortrait && (focusProjectsOnReveal || previousFocus === skip || previousFocus === advance)) {
-    focusProjectsOnReveal = false;
-    projects.focus({ preventScroll: true });
-  } else if (!showPortrait && previousFocus === replay) {
+  if (showPortrait && (focusHeroOnReveal || previousFocus === skip || previousFocus === advance)) {
+    focusHeroOnReveal = false;
+    heroContent.focus({ preventScroll: true });
+  } else if (!showPortrait && heroContent.contains(previousFocus)) {
     skip.focus({ preventScroll: true });
   }
 }
@@ -93,6 +88,45 @@ function coverVideo(x, y, width, height) {
     reel, (reel.videoWidth - sourceWidth) / 2, (reel.videoHeight - sourceHeight) / 2,
     sourceWidth, sourceHeight, x, y, width, height,
   );
+}
+
+function reflectVideo(x, y, width, height, strength) {
+  if (strength < .015) {
+    coverVideo(x, y, width, height);
+    return;
+  }
+
+  const scale = Math.max(width / reel.videoWidth, height / reel.videoHeight);
+  const sourceWidth = width / scale;
+  const sourceHeight = height / scale;
+  const sourceX = (reel.videoWidth - sourceWidth) / 2;
+  const sourceY = (reel.videoHeight - sourceHeight) / 2;
+  const strips = 24;
+  // Stretch the centre of the reflection and compress the image near the glass edges.
+  const curve = value => value - .34 * strength * Math.sin(value * Math.PI * 2) / (Math.PI * 2);
+
+  for (let index = 0; index < strips; index += 1) {
+    const left = index / strips;
+    const right = (index + 1) / strips;
+    const position = left + .5 / strips;
+    const bulge = Math.sin(position * Math.PI);
+    const extraHeight = height * strength * (.14 + .23 * bulge);
+    const tilt = height * strength * .13 * (position - .5);
+    const start = curve(left);
+    const end = curve(right);
+
+    context.drawImage(
+      reel, sourceX + start * sourceWidth, sourceY, (end - start) * sourceWidth, sourceHeight,
+      x + left * width, y - extraHeight / 2 + tilt, width / strips + .35, height + extraHeight,
+    );
+  }
+
+  const tint = context.createLinearGradient(x, y, x + width, y + height);
+  tint.addColorStop(0, `rgba(197, 126, 104, ${.22 * strength})`);
+  tint.addColorStop(.48, `rgba(86, 42, 52, ${.10 * strength})`);
+  tint.addColorStop(1, `rgba(38, 21, 38, ${.24 * strength})`);
+  context.fillStyle = tint;
+  context.fillRect(x, y, width, height);
 }
 
 function draw(amount, useVideo) {
@@ -112,14 +146,26 @@ function draw(amount, useVideo) {
   const x = anchorX - cameraPoint.x * zoom;
   const y = anchorY - cameraPoint.y * zoom;
 
-  context.fillStyle = '#e9e8e5';
+  context.fillStyle = '#100f0f';
   context.fillRect(0, 0, width, height);
   context.drawImage(portrait, x, y, 1080 * zoom, 1920 * zoom);
 
-  if (wide.matches && amount > .84) {
-    context.fillStyle = `rgba(23, 25, 21, ${.13 * smooth((amount - .84) / .16)})`;
-    context.fillRect(x, 0, 1, height);
-    context.fillRect(x + 1080 * zoom - 1, 0, 1, height);
+  // Blend the sides of the photo into the matching dark backdrop on wide screens.
+  const edgeWidth = Math.min(40, 66 * zoom);
+  const rightEdge = x + 1080 * zoom;
+  if (x + edgeWidth > 0) {
+    const leftFade = context.createLinearGradient(x, 0, x + edgeWidth, 0);
+    leftFade.addColorStop(0, '#100f0f');
+    leftFade.addColorStop(1, 'rgba(16, 15, 15, 0)');
+    context.fillStyle = leftFade;
+    context.fillRect(x, 0, edgeWidth, height);
+  }
+  if (rightEdge - edgeWidth < width) {
+    const rightFade = context.createLinearGradient(rightEdge - edgeWidth, 0, rightEdge, 0);
+    rightFade.addColorStop(0, 'rgba(16, 15, 15, 0)');
+    rightFade.addColorStop(1, '#100f0f');
+    context.fillStyle = rightFade;
+    context.fillRect(rightEdge - edgeWidth, 0, edgeWidth, height);
   }
 
   if (useVideo) {
@@ -134,8 +180,9 @@ function draw(amount, useVideo) {
       context.scale(zoom, zoom);
       context.clip(lenses);
       context.setTransform(dpr, 0, 0, dpr, 0, 0);
-      context.globalAlpha = 1 - .12 * smooth(clamp((amount - .68) / .32, 0, 1));
-      coverVideo(left, top, right - left, bottom - top);
+      const refraction = smooth(clamp((amount - .2) / .8, 0, 1));
+      context.globalAlpha = 1 - .10 * refraction;
+      reflectVideo(left, top, right - left, bottom - top, refraction);
       context.restore();
     }
   }
@@ -153,12 +200,13 @@ function update(now) {
   let easing = false;
 
   if (active && hasFrame) {
-    if (scrollMode.matches) {
+    if (skipped) {
+      progress = 1;
+    } else if (scrollMode.matches) {
       const target = clamp(scrollY / geometry.travel, 0, 1);
       const distance = target - progress;
       easing = Math.abs(distance) > .002;
       progress = easing ? progress + distance * .18 : target;
-      if (target < 1 && reflectedAt !== null && reel.paused) playReel();
     } else {
       if (transitionAt === null && reel.currentTime >= waitBeforePullback) transitionAt = now;
       if (transitionAt !== null) {
@@ -168,15 +216,12 @@ function update(now) {
     }
 
     setState(progress === 1 ? 'portrait' : progress < .05 ? 'film' : 'pullback');
-    if (progress === 1) {
-      reflectedAt ??= now;
-      if (now - reflectedAt > reflectionDuration) reel.pause();
-    } else {
-      reflectedAt = null;
-    }
   }
 
-  if (!active || hasFrame) draw(progress, active && hasFrame);
+  if ((!active || hasFrame) && (progress < 1 || now - lastPaint >= 31)) {
+    draw(progress, active && hasFrame);
+    lastPaint = now;
+  }
   if (active && (!reel.paused || easing)) scheduleFrame();
 }
 
@@ -185,7 +230,17 @@ function showPortrait() {
   clearTimeout(loadTimer);
   active = false;
   progress = 1;
+  lastPaint = -Infinity;
   reel.pause();
+  updateTravel();
+  setState('portrait');
+  scheduleFrame();
+}
+
+function skipIntro() {
+  skipped = true;
+  progress = 1;
+  lastPaint = -Infinity;
   updateTravel();
   setState('portrait');
   scheduleFrame();
@@ -206,9 +261,9 @@ function playReel() {
 function start() {
   if (!photoReady || reducedMotion.matches) return;
   active = true;
+  skipped = false;
   progress = 0;
   transitionAt = null;
-  reflectedAt = null;
   reel.currentTime = 0;
   reel.muted = true;
   scene.hidden = true;
@@ -224,15 +279,10 @@ if (context) {
   const resize = new ResizeObserver(measure);
   resize.observe(stage);
   scrollMode.addEventListener('change', () => {
-    if (active) start();
+    if (active && !skipped) start();
   });
   reducedMotion.addEventListener('change', () => {
-    if (reducedMotion.matches) {
-      showPortrait();
-      replay.hidden = true;
-    } else if (photoReady) {
-      replay.hidden = false;
-    }
+    if (reducedMotion.matches) showPortrait();
   });
 
   addEventListener('scroll', scheduleFrame, { passive: true });
@@ -245,13 +295,11 @@ if (context) {
   });
   reel.addEventListener('error', showPortrait);
 
-  skip.addEventListener('click', showPortrait);
+  skip.addEventListener('click', skipIntro);
   advance.addEventListener('click', event => {
-    focusProjectsOnReveal = event.detail === 0;
+    focusHeroOnReveal = event.detail === 0;
     window.scrollTo({ top: geometry.travel, behavior: 'instant' });
   });
-  replay.addEventListener('click', start);
-
   portrait.decode().then(() => {
     photoReady = true;
     if (reducedMotion.matches) scheduleFrame();

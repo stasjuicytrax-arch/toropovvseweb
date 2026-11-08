@@ -1,31 +1,9 @@
-@font-face {
-  font-family: Onest;
-  src: url("../assets/fonts/onest-regular.woff2") format("woff2");
-  font-display: swap;
-}
-
-@font-face {
-  font-family: Onest;
-  src: url("../assets/fonts/onest-semibold.woff2") format("woff2");
-  font-weight: 600;
-  font-display: swap;
-}
-
 :root {
-  --paper: #eeedeb;
-  --ink: #171915;
-  --light: #faf8f2;
-  --inset: clamp(16px, 3.5vw, 60px);
-  color: var(--ink);
-  background: var(--paper);
-  font-family: Onest, sans-serif;
-  color-scheme: light;
+  background: #100f0f;
+  color-scheme: dark;
 }
 
-* { box-sizing: border-box; }
 [hidden] { display: none !important; }
-body { margin: 0; }
-
 .experience { height: calc(100svh + var(--travel, 0px)); }
 
 .stage {
@@ -34,10 +12,19 @@ body { margin: 0; }
   isolation: isolate;
   height: 100svh;
   overflow: clip;
-  background: var(--paper);
+  background: #100f0f;
 }
 
-.portrait, .poster, #scene {
+.stage .hero {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  min-height: 0;
+  background: transparent;
+  outline: 0;
+}
+
+.intro-portrait, .poster, #scene {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -45,14 +32,14 @@ body { margin: 0; }
   pointer-events: none;
 }
 
-.portrait {
+.intro-portrait {
   object-fit: cover;
-  object-position: center 68%;
+  object-position: 55% 50%;
 }
 
 .poster {
   display: none;
-  background: #151713 url("reel-poster.jpg") center / cover no-repeat;
+  background: #100f0f url("reel-poster.jpg") center / cover no-repeat;
 }
 
 .stage[data-state="loading"] .poster { display: block; }
@@ -65,25 +52,9 @@ body { margin: 0; }
   pointer-events: none;
 }
 
-.top {
+.intro-control {
   position: absolute;
   z-index: 1;
-  inset: max(16px, env(safe-area-inset-top)) var(--inset) auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 14px;
-  pointer-events: none;
-}
-
-.identity { margin: 0; line-height: 0; }
-.identity img {
-  width: clamp(128px, 16vw, 224px);
-  height: auto;
-  filter: brightness(0);
-}
-
-.control {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -93,18 +64,16 @@ body { margin: 0; }
   border: 1px solid rgb(250 248 242 / .32);
   border-radius: 99px;
   background: rgb(18 20 16 / .86);
-  color: var(--light);
+  color: rgb(var(--glass-light));
   font: 600 13px/1.2 Onest, sans-serif;
-  text-decoration: none;
   white-space: nowrap;
   cursor: pointer;
-  pointer-events: auto;
   touch-action: manipulation;
   -webkit-tap-highlight-color: rgb(250 248 242 / .2);
   transition: background-color 160ms ease, color 160ms ease;
 }
 
-.control svg {
+.intro-control svg {
   width: 17px;
   height: 17px;
   fill: none;
@@ -114,57 +83,35 @@ body { margin: 0; }
   stroke-linejoin: round;
 }
 
-.control:focus-visible {
-  outline: 2px solid var(--light);
+.intro-control:focus-visible {
+  outline: 2px solid rgb(var(--glass-light));
   outline-offset: 2px;
-  box-shadow: 0 0 0 5px var(--ink);
+  box-shadow: 0 0 0 5px #171915;
 }
 
 @media (hover: hover) {
-  .control:hover { background: var(--light); color: var(--ink); border-color: var(--ink); }
+  .intro-control:hover { background: rgb(var(--glass-light)); color: #171915; border-color: #171915; }
 }
 
-.skip { margin-inline-start: auto; }
+.skip {
+  top: max(16px, env(safe-area-inset-top));
+  right: max(16px, 3.5vw, env(safe-area-inset-right));
+}
 
-.advance, .replay {
-  position: absolute;
+.advance {
+  left: 50%;
   bottom: max(20px, calc(env(safe-area-inset-bottom) + 10px));
+  transform: translateX(-50%);
 }
 
-.advance { left: 50%; transform: translateX(-50%); }
-.replay { left: var(--inset); }
-.caption { display: none; }
-
-.stage[data-state="portrait"] :is(.identity, .projects, .replay, .caption) {
-  animation: appear 420ms cubic-bezier(.2,.75,.22,1) both;
-}
-
-@keyframes appear {
-  from { opacity: 0; transform: translateY(5px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@media (min-width: 900px) and (orientation: landscape) {
-  .portrait {
-    inset-inline-start: 55%;
-    width: calc(100svh * .74);
+@media (min-width: 960px) and (min-aspect-ratio: 4/3) {
+  .intro-portrait {
+    inset-inline-start: 48%;
+    width: calc(100svh * .83);
     transform: translateX(-50%);
-  }
-
-  .top { top: max(30px, env(safe-area-inset-top)); }
-
-  .caption {
-    display: block;
-    position: absolute;
-    inset: auto auto 21% var(--inset);
-    max-width: min(20vw, 230px);
-    margin: 0;
-    font-size: clamp(14px, 1.25vw, 20px);
-    line-height: 1.4;
-    text-wrap: pretty;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .intro-control { transition: none; }
 }
