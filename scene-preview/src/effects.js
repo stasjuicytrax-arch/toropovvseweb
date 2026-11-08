@@ -1,6 +1,6 @@
 import {
   Box2, BufferGeometry, CatmullRomCurve3, Color, DoubleSide, ExtrudeGeometry,
-  Float32BufferAttribute, Group, Mesh, MeshBasicMaterial, MeshStandardMaterial,
+  Float32BufferAttribute, Group, Mesh, MeshStandardMaterial,
   PlaneGeometry, ShaderMaterial, Vector3,
 } from 'three';
 import { SVGLoader } from 'three/addons/loaders/SVGLoader.js';
@@ -161,28 +161,41 @@ export function makeLetters(width, height, desktop) {
     .filter(({ bounds }) => bounds.min.y > 88)
     .sort((a, b) => a.bounds.min.x - b.bounds.min.x);
   const wordBounds = glyphs.reduce((box, { bounds }) => box.union(bounds), new Box2());
-  const wordCenter = (wordBounds.min.x + wordBounds.max.x) / 2;
+  const gap = 14;
+  const spacing = gap * (glyphs.length - 1);
+  const wordCenter = (wordBounds.min.x + wordBounds.max.x + spacing) / 2;
   const wordWidth = width * (desktop ? .57 : .74);
-  const scale = wordWidth / (wordBounds.max.x - wordBounds.min.x);
+  const scale = wordWidth / (wordBounds.max.x - wordBounds.min.x + spacing);
   const base = height * (desktop ? .127 : .266);
+  const depth = 36;
   const material = [
-    new MeshBasicMaterial({ color: '#ffffff' }),
-    new MeshStandardMaterial({ color: '#e6eaf2', roughness: .46, metalness: .10 }),
+    new MeshStandardMaterial({ color: '#ffffff', roughness: .42, metalness: .03, emissive: '#e8efff', emissiveIntensity: .08 }),
+    new MeshStandardMaterial({ color: '#a3afc2', roughness: .49, metalness: .12 }),
   ];
-  const letters = glyphs.map(({ shape, bounds }) => {
+  const driftProfiles = [
+    { phase: 2.4, speed: .86, lift: 4.5, roll: .022, rise: 1.69 },
+    { phase: 5.7, speed: 1.12, lift: 3.1, roll: .019, rise: 1.84 },
+    { phase: 1.1, speed: .73, lift: 5.0, roll: .026, rise: 1.73 },
+    { phase: 4.6, speed: 1.24, lift: 3.4, roll: .016, rise: 1.92 },
+    { phase: 3.2, speed: .94, lift: 4.6, roll: .025, rise: 1.77 },
+    { phase: .2, speed: 1.05, lift: 3.8, roll: .020, rise: 1.65 },
+    { phase: 5.0, speed: .69, lift: 4.1, roll: .024, rise: 1.86 },
+  ];
+  const letters = glyphs.map(({ shape, bounds }, index) => {
     const center = (bounds.min.x + bounds.max.x) / 2;
     const geometry = new ExtrudeGeometry(shape, {
-      depth: 12, bevelEnabled: true, bevelSize: 1.1, bevelThickness: 1.2,
-      bevelSegments: 2, curveSegments: 8,
+      depth, bevelEnabled: true, bevelSize: 2.2, bevelThickness: 2.5,
+      bevelSegments: 3, curveSegments: 10,
     });
-    geometry.translate(-center, -wordBounds.max.y, -6);
+    geometry.translate(-center, -wordBounds.max.y, -depth / 2);
     geometry.rotateX(Math.PI);
     const mesh = new Mesh(geometry, material);
     mesh.scale.setScalar(scale);
     object.add(mesh);
-    return { mesh, x: (center - wordCenter) * scale };
+    return { mesh, x: (center + index * gap - wordCenter) * scale, profile: driftProfiles[index] };
   });
   object.position.set(width * (desktop ? .49 : .5), -base, 0);
+  object.rotation.set(.22, -.24, .012);
 
   return {
     object,
@@ -194,13 +207,16 @@ export function makeLetters(width, height, desktop) {
     render(time) {
       const float = Math.max(0, time - 2.35);
       const drift = smooth(float / 1.2);
-      object.rotation.y = -.06 + drift * .045 * Math.sin(float * .8);
-      letters.forEach(({ mesh, x }, index) => {
-        const amount = smooth((time - index * .085) / 1.78);
-        const wave = float * 1.15 - index * .63;
-        const y = -(desktop ? 154 : 208) * (1 - amount) + drift * 5.5 * Math.sin(wave);
-        mesh.position.set(x, y, 0);
-        mesh.rotation.set(.10 * (1 - amount), .22 * (1 - amount), drift * .018 * Math.sin(wave + .5));
+      letters.forEach(({ mesh, x, profile }) => {
+        const amount = smooth(time / profile.rise);
+        const cycle = float * profile.speed + profile.phase;
+        const lift = drift * profile.lift * Math.sin(cycle);
+        mesh.position.set(x + drift * 1.7 * Math.sin(cycle * .77), -(desktop ? 154 : 208) * (1 - amount) + lift, 0);
+        mesh.rotation.set(
+          -.16 * (1 - amount) + drift * .025 * Math.sin(cycle * 1.1 + 1.3),
+          -.13 + .32 * (1 - amount) + drift * .035 * Math.sin(cycle * .9 + 2.1),
+          drift * profile.roll * Math.sin(cycle * 1.27 + .5),
+        );
       });
     },
   };

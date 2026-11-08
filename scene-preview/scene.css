@@ -12,7 +12,7 @@
 
 .scene-effects > canvas { inset: 0; }
 
-.scene-letters .identity { margin-top: 26px; }
+.scene-letters .identity { margin-top: 13px; }
 
 .scene-letters .identity h1 {
   position: absolute;
