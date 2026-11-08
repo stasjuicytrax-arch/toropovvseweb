@@ -215,8 +215,13 @@ h1 { margin: 0; line-height: 0; }
   .project-track { scroll-behavior: smooth; }
   .wordmark { animation: identity-in 700ms cubic-bezier(.16,1,.3,1) both; }
   .project-panel > * { animation: content-in 460ms cubic-bezier(.16,1,.3,1) 50ms both; }
+  .socials-enter a { animation: social-enter 500ms cubic-bezier(.16,1,.3,1) 100ms backwards; }
+  .socials-enter a:nth-child(2) { animation-delay: 200ms; }
+  .socials-enter a:nth-child(3) { animation-delay: 300ms; }
+  .socials-enter a:focus-visible { animation: none; }
   @keyframes identity-in { from { opacity: 0; transform: translateY(8px); } to { opacity: .98; transform: translateY(0); } }
   @keyframes content-in { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes social-enter { from { opacity: 0; transform: translateX(26px); } to { opacity: 1; transform: translateX(0); } }
 }
 @media (prefers-reduced-motion: reduce) {
   .project-action { transition: none; }
