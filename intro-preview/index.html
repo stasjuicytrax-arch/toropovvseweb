@@ -8,9 +8,9 @@
   <title>Стас Торопов — видеоинтро</title>
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../mobile.css?v=14">
-  <link rel="stylesheet" href="intro.css?v=2">
+  <link rel="stylesheet" href="intro.css?v=4">
   <script src="../projects.js?v=8" defer></script>
-  <script type="module" src="intro.js?v=2"></script>
+  <script type="module" src="intro.js?v=4"></script>
 </head>
 <body>
   <svg class="filter-definitions" width="0" height="0" aria-hidden="true" focusable="false">
@@ -21,15 +21,20 @@
       <symbol id="project-step-arrow" viewBox="0 0 16 16">
         <path d="M2.5 8h10m-4-4 4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
       </symbol>
+      <clipPath id="intro-lenses" clipPathUnits="objectBoundingBox">
+        <path transform="scale(.003267974 .006097561) translate(-33 -28)" d="M 35 80 C 36 58 45 38 63 33 C 84 27 113 33 144 44 C 161 50 176 57 173 72 C 170 92 155 117 137 131 C 116 147 92 151 71 141 C 47 130 34 107 35 80 Z M 211 92 C 216 82 235 85 260 91 C 286 97 310 106 325 120 C 339 133 342 151 331 167 C 321 184 299 192 276 189 C 253 186 236 175 225 157 C 214 139 211 111 211 92 Z"/>
+      </clipPath>
     </defs>
   </svg>
-  <main class="experience" id="experience">
-    <section class="stage" id="stage" data-state="portrait" aria-label="Стас Торопов и его проекты">
-      <img class="intro-portrait" id="portrait" src="portrait-v2.jpg" width="1080" height="1920" alt="Стас Торопов в очках" fetchpriority="high">
-      <div class="poster" aria-hidden="true"></div>
-      <video id="reel" src="reel.mp4" muted playsinline preload="none" loop aria-hidden="true"></video>
-      <canvas id="scene" aria-hidden="true" hidden></canvas>
-      <div class="hero" id="hero-content" tabindex="-1">
+  <main class="stage" aria-label="Стас Торопов и его проекты">
+      <div class="shot">
+        <img class="intro-portrait" id="portrait" src="portrait-v2.jpg" width="1080" height="1920" alt="Стас Торопов в очках" fetchpriority="high">
+        <div class="lens-window" id="lens-window" aria-hidden="true" hidden>
+          <video id="reel" src="reel-lenses.mp4" width="512" height="248" muted playsinline preload="none" loop></video>
+          <canvas id="reflection" width="306" height="164" hidden></canvas>
+        </div>
+      </div>
+      <div class="hero">
     <header class="identity">
       <h1><img class="wordmark" src="../assets/wordmark.png" width="810" height="179" alt="Стас Торопов"></h1>
       <nav class="socials" aria-label="Социальные сети Стаса Торопова">
@@ -123,12 +128,6 @@
       </div>
     </div>
       </div>
-      <button class="intro-control skip" id="skip" type="button" hidden>Пропустить</button>
-      <button class="intro-control advance" id="advance" type="button" hidden>
-        <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 3v13M5 11l5 5 5-5"/></svg>
-        Прокрути вниз
-      </button>
-    </section>
   </main>
 </body>
 </html>

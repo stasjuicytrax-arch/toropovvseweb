@@ -4,11 +4,9 @@
 }
 
 [hidden] { display: none !important; }
-.experience { height: calc(100svh + var(--travel, 0px)); }
 
 .stage {
-  position: sticky;
-  top: 0;
+  position: relative;
   isolation: isolate;
   height: 100svh;
   overflow: clip;
@@ -21,97 +19,75 @@
   height: 100%;
   min-height: 0;
   background: transparent;
-  outline: 0;
 }
 
-.intro-portrait, .poster, #scene {
+.shot {
+  position: absolute;
+  top: 41%;
+  left: 50%;
+  width: max(100%, 62.55svh);
+  aspect-ratio: 9 / 16;
+  transform: translate(-55.37037%, -36.875%);
+  pointer-events: none;
+}
+
+.intro-portrait, #reel, #reflection {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  pointer-events: none;
 }
 
 .intro-portrait {
-  object-fit: cover;
-  object-position: 55% 50%;
+  mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
 }
 
-.poster {
-  display: none;
-  background: #100f0f url("reel-poster.jpg") center / cover no-repeat;
-}
-
-.stage[data-state="loading"] .poster { display: block; }
-
-#reel {
+.lens-window {
+  --reflection-opacity: .68;
   position: absolute;
-  width: 1px;
-  height: 1px;
+  /* Lens bounds (473, 628, 306, 164) in the 1080 × 1920 portrait. */
+  left: 43.796296%;
+  top: 32.708333%;
+  width: 28.333333%;
+  height: 8.541667%;
+  clip-path: url(#intro-lenses);
   opacity: 0;
-  pointer-events: none;
 }
 
-.intro-control {
+#reel { object-fit: cover; }
+
+.lens-window.is-playing {
+  opacity: var(--reflection-opacity);
+  animation: signal-in 960ms ease-out both;
+}
+
+.lens-window.is-playing::after {
+  content: '';
   position: absolute;
-  z-index: 1;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  min-height: 44px;
-  padding: 8px 15px;
-  border: 1px solid rgb(250 248 242 / .32);
-  border-radius: 99px;
-  background: rgb(18 20 16 / .86);
-  color: rgb(var(--glass-light));
-  font: 600 13px/1.2 Onest, sans-serif;
-  white-space: nowrap;
-  cursor: pointer;
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: rgb(250 248 242 / .2);
-  transition: background-color 160ms ease, color 160ms ease;
+  inset: 0;
+  background: linear-gradient(transparent 44%, rgb(175 221 255 / .17) 50%, transparent 57%);
+  animation: scan-in 820ms ease-out both;
 }
 
-.intro-control svg {
-  width: 17px;
-  height: 17px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.5;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+@keyframes signal-in {
+  0%, 12% { opacity: 0; }
+  27% { opacity: .52; }
+  43% { opacity: .22; }
+  63% { opacity: .76; }
+  76% { opacity: .48; }
+  100% { opacity: var(--reflection-opacity); }
 }
 
-.intro-control:focus-visible {
-  outline: 2px solid rgb(var(--glass-light));
-  outline-offset: 2px;
-  box-shadow: 0 0 0 5px #171915;
-}
-
-@media (hover: hover) {
-  .intro-control:hover { background: rgb(var(--glass-light)); color: #171915; border-color: #171915; }
-}
-
-.skip {
-  top: max(16px, env(safe-area-inset-top));
-  right: max(16px, 3.5vw, env(safe-area-inset-right));
-}
-
-.advance {
-  left: 50%;
-  bottom: max(20px, calc(env(safe-area-inset-bottom) + 10px));
-  transform: translateX(-50%);
+@keyframes scan-in {
+  from { transform: translateY(-100%); opacity: 0; }
+  35% { opacity: 1; }
+  to { transform: translateY(100%); opacity: 0; }
 }
 
 @media (min-width: 960px) and (min-aspect-ratio: 4/3) {
-  .intro-portrait {
-    inset-inline-start: 48%;
-    width: calc(100svh * .83);
-    transform: translateX(-50%);
-  }
+  .shot { top: 40%; width: 83.08svh; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .intro-control { transition: none; }
+  .lens-window { display: none; }
 }
