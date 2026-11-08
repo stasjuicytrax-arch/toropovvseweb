@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#151713">
+  <title>Стас Торопов — видеоинтро</title>
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="intro.css">
+  <script src="intro.js" defer></script>
+</head>
+<body>
+  <main class="experience" id="experience">
+    <section class="stage" id="stage" data-state="portrait" aria-label="Стас Торопов">
+      <img class="portrait" id="portrait" src="portrait.jpg" width="1080" height="1920" alt="Стас Торопов в очках" fetchpriority="high">
+      <div class="poster" aria-hidden="true"></div>
+      <video id="reel" src="reel.mp4" muted playsinline preload="none" loop aria-hidden="true"></video>
+      <canvas id="scene" aria-hidden="true" hidden></canvas>
+
+      <header class="top">
+        <h1 class="identity" id="identity"><img src="../assets/wordmark.png" width="810" height="179" alt="Стас Торопов"></h1>
+        <a class="control projects" id="projects" href="../">
+          К проектам
+          <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 15 15 5M6 5h9v9"/></svg>
+        </a>
+        <button class="control skip" id="skip" type="button" hidden>Пропустить</button>
+      </header>
+
+      <p class="caption" id="caption">Ведущий частных событий и корпоративных мероприятий</p>
+      <button class="control advance" id="advance" type="button" hidden>
+        <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 3v13M5 11l5 5 5-5"/></svg>
+        Прокрути вниз
+      </button>
+      <button class="control replay" id="replay" type="button" hidden>
+        <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 8a6.5 6.5 0 1 1 .8 6.7M4 3.5V8h4.5"/></svg>
+        Повторить
+      </button>
+    </section>
+  </main>
+</body>
+</html>
