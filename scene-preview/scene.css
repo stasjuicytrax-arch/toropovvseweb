@@ -12,6 +12,16 @@
 
 .scene-effects > canvas { inset: 0; }
 
+.scene-letters .identity { margin-top: 26px; }
+
+.scene-letters .identity h1 {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
 .scene-replay, .scene-status {
   position: absolute;
   z-index: 1;

@@ -16,7 +16,12 @@
   <link rel="preload" as="font" href="../assets/fonts/onest-semibold.woff2" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="../mobile.css?v=15">
   <script src="../projects.js?v=8" defer></script>
-  <link rel="stylesheet" href="scene.css?v=1">
+  <script>
+    if (new URLSearchParams(location.search).get('scene') === 'letters') {
+      document.documentElement.classList.add('scene-letters');
+    }
+  </script>
+  <link rel="stylesheet" href="scene.css?v=2">
   <script type="module" src="scene.js?v=2"></script>
 </head>
 <body>
