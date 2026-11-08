@@ -1,10 +1,13 @@
 import { DirectionalLight, HemisphereLight, OrthographicCamera, Scene, WebGLRenderer } from 'three';
 import { makeLetters, makeLights, makeRibbon } from './effects.js';
+import { makeSunset, makeWind } from './nature.js';
 
 const choices = {
   ribbon: { title: 'Стеклянная лента', create: makeRibbon },
   lights: { title: 'Сценический свет', create: makeLights },
   letters: { title: 'TOROPOV', create: makeLetters },
+  sunset: { title: 'Волна закатного света', create: makeSunset, landscape: true },
+  wind: { title: 'Порыв ветра', create: makeWind, landscape: true },
 };
 const variant = new URLSearchParams(location.search).get('scene');
 const choice = Object.hasOwn(choices, variant) ? choices[variant] : choices.ribbon;
@@ -20,6 +23,16 @@ const svgNS = 'http://www.w3.org/2000/svg';
 // Traces follow the foreground edge of the original portraits in photo pixels.
 const mobileOutline = 'M0 791 C48 747 95 739 155 740 C218 738 284 749 338 744 C333 712 332 686 344 653 C365 625 400 600 431 584 L460 568 Q476 551 476 524 C466 523 463 515 468 502 L476 476 C478 451 491 433 516 424 C547 412 570 420 587 446 C602 467 602 496 598 521 L591 552 L581 566 C595 583 612 601 637 617 C677 640 688 671 690 718 C782 721 875 725 941 805 L941 1672 H0 Z';
 const desktopOutline = 'M0 527 C188 527 361 507 431 487 C439 434 468 382 514 355 C569 323 634 335 736 336 C730 309 733 284 746 265 C767 243 794 227 820 211 L839 194 C838 183 833 170 833 156 Q833 146 841 140 C843 112 864 93 888 92 C915 91 932 113 933 141 C934 160 931 180 922 197 L919 204 C936 221 959 235 978 247 C993 263 1000 291 1000 318 C1087 317 1157 344 1205 410 C1232 447 1248 497 1253 544 L1672 541 V941 H0 Z';
+const mobileSubject = mobileOutline.replace(
+  'L941 1672 H0 Z',
+  'L941 1185 C895 1259 810 1294 699 1324 L682 1360 Q692 1430 638 1438 Q600 1437 547 1380 C353 1391 138 1353 0 1255 Z',
+);
+const desktopSubject = desktopOutline
+  .replace('M0 527 C188 527 361 507 431 487', 'M425 487')
+  .replace(
+    'L1672 541 V941 H0 Z',
+    'C1276 651 1240 730 1158 764 C1097 786 1035 794 1004 791 Q1005 838 967 845 Q918 843 867 807 C770 815 667 807 602 790 C497 772 445 714 430 649 Q409 559 425 487 Z',
+  );
 
 const scene = new Scene();
 const camera = new OrthographicCamera(0, 1, 0, -1, 1, 4000);
@@ -51,7 +64,10 @@ function addForeground(width, height, desktop) {
   foreground = svg('svg', { viewBox: [0, 0, width, height].join(' '), 'aria-hidden': 'true' });
   const defs = svg('defs', {});
   const clip = svg('clipPath', { id: 'scene-foreground-clip' });
-  clip.append(svg('path', { d: desktop ? desktopOutline : mobileOutline }));
+  const outline = choice.landscape
+    ? (desktop ? desktopSubject : mobileSubject)
+    : (desktop ? desktopOutline : mobileOutline);
+  clip.append(svg('path', { d: outline }));
   defs.append(clip);
   foreground.append(defs, svg('image', {
     href: source, width, height, 'clip-path': 'url(#scene-foreground-clip)',
@@ -67,6 +83,7 @@ function disposeEffect() {
     if (node.material) for (const material of [node.material].flat()) materials.add(material);
   });
   materials.forEach(material => material.dispose());
+  effect.dispose?.();
   scene.remove(effect.object);
   effect = null;
 }
@@ -122,7 +139,7 @@ function fit() {
   if (changed) {
     source = portrait.currentSrc;
     disposeEffect();
-    effect = choice.create(imageWidth, imageHeight, desktop);
+    effect = choice.create(imageWidth, imageHeight, desktop, portrait);
     scene.add(effect.object);
     addForeground(imageWidth, imageHeight, desktop);
   }
