@@ -4338,7 +4338,9 @@ void main() {
     float gust = smoothstep(0.0, 0.27, age) * (1.0 - smoothstep(0.51, 1.34, age));
     float plants = smoothstep(edge + 0.015, edge + 0.09, y);
     float stems = 0.65 + 0.35 * sin(115.0 * x + sin(y * 83.0) * 1.4);
-    float bend = gust * plants * stems * mix(0.55, 1.0, depth);
+    float border = min(min(x, 1.0 - x), 1.0 - y);
+    float bend = gust * plants * stems * mix(0.55, 1.0, depth)
+      * smoothstep(0.0, 0.036, border);
     vec2 shift = vec2(
       (wide ? 0.014 : 0.027) * (0.60 + 0.40 * sin(age * 10.0 - y * 28.0 + x * 8.0)),
       0.004 * sin(age * 9.0 + x * 25.0)
