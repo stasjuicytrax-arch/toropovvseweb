@@ -8,9 +8,9 @@
   <title>Стас Торопов — видеоинтро</title>
   <link rel="icon" href="../favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="../mobile.css?v=14">
-  <link rel="stylesheet" href="intro.css?v=4">
+  <link rel="stylesheet" href="intro.css?v=5">
   <script src="../projects.js?v=8" defer></script>
-  <script type="module" src="intro.js?v=4"></script>
+  <script type="module" src="intro.js?v=5"></script>
 </head>
 <body>
   <svg class="filter-definitions" width="0" height="0" aria-hidden="true" focusable="false">
@@ -30,8 +30,28 @@
       <div class="shot">
         <img class="intro-portrait" id="portrait" src="portrait-v2.jpg" width="1080" height="1920" alt="Стас Торопов в очках" fetchpriority="high">
         <div class="lens-window" id="lens-window" aria-hidden="true" hidden>
-          <video id="reel" src="reel-lenses.mp4" width="512" height="248" muted playsinline preload="none" loop></video>
-          <canvas id="reflection" width="306" height="164" hidden></canvas>
+          <div class="lens-media">
+            <video id="reel" src="reel-lenses.mp4" width="512" height="248" muted playsinline preload="none" loop></video>
+            <canvas id="reflection" width="306" height="164" hidden></canvas>
+          </div>
+          <svg class="lens-hud" viewBox="0 0 306 164" focusable="false">
+            <defs>
+              <clipPath id="hud-charge-clip">
+                <rect class="hud-charge" x="25" y="60" width="87" height="8"/>
+              </clipPath>
+            </defs>
+            <path class="hud-scan" d="M0 0h306M0 5h306"/>
+            <path class="hud-brackets" d="M19 44v-9h12m73 0h12v9M19 66v9h12m73 0h12v-9"/>
+            <text x="26" y="54">SYNC</text>
+            <path class="hud-track" d="M26 64h84"/>
+            <path class="hud-level" d="M26 64h84" clip-path="url(#hud-charge-clip)"/>
+            <g class="hud-radar">
+              <circle cx="239" cy="108" r="25"/>
+              <circle cx="239" cy="108" r="15"/>
+              <path class="hud-sweep" d="M239 83a25 25 0 0 1 25 25"/>
+              <path d="M239 78v9m0 42v9m-30-30h9m42 0h9m-35 0h10m-5-5v10"/>
+            </g>
+          </svg>
         </div>
       </div>
       <div class="hero">

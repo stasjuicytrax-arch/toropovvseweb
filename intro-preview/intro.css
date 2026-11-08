@@ -31,7 +31,7 @@
   pointer-events: none;
 }
 
-.intro-portrait, #reel, #reflection {
+.intro-portrait, .lens-media, .lens-hud, #reel, #reflection {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -51,37 +51,40 @@
   width: 28.333333%;
   height: 8.541667%;
   clip-path: url(#intro-lenses);
-  opacity: 0;
 }
 
 #reel { object-fit: cover; }
 
-.lens-window.is-playing {
-  opacity: var(--reflection-opacity);
-  animation: signal-in 960ms ease-out both;
+.lens-media, .lens-hud { transition: opacity 330ms ease; }
+.lens-media { opacity: 0; }
+.lens-hud { background: rgb(5 41 48 / .42); color: #a2f7ff; }
+.lens-hud path, .lens-hud circle { fill: none; stroke: currentColor; stroke-width: 2; }
+.lens-hud text { fill: currentColor; font: 600 16px Onest, sans-serif; letter-spacing: 3px; }
+.lens-hud .hud-track, .lens-hud .hud-level { stroke-width: 5; stroke-dasharray: 10 4; }
+.lens-hud .hud-track { opacity: .28; }
+.hud-charge { transform-box: fill-box; transform-origin: left center; }
+.lens-hud .hud-brackets, .hud-radar { opacity: .72; }
+.lens-hud .hud-sweep { stroke: #e0fdff; stroke-width: 4; transform-origin: 239px 108px; }
+
+.lens-window:not(.is-playing) .hud-charge { animation: hud-charge 1120ms steps(6, end) both; }
+.lens-window:not(.is-playing) .hud-scan { animation: hud-scan 740ms linear infinite; }
+.lens-window:not(.is-playing) .hud-sweep { animation: hud-sweep 780ms linear infinite; }
+.lens-window.is-playing .lens-media { opacity: var(--reflection-opacity); }
+.lens-window.is-playing .lens-hud { opacity: 0; }
+
+@keyframes hud-charge {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
 }
 
-.lens-window.is-playing::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(transparent 44%, rgb(175 221 255 / .17) 50%, transparent 57%);
-  animation: scan-in 820ms ease-out both;
+@keyframes hud-scan {
+  from { transform: translateY(0); opacity: .25; }
+  40% { opacity: .9; }
+  to { transform: translateY(164px); opacity: .25; }
 }
 
-@keyframes signal-in {
-  0%, 12% { opacity: 0; }
-  27% { opacity: .52; }
-  43% { opacity: .22; }
-  63% { opacity: .76; }
-  76% { opacity: .48; }
-  100% { opacity: var(--reflection-opacity); }
-}
-
-@keyframes scan-in {
-  from { transform: translateY(-100%); opacity: 0; }
-  35% { opacity: 1; }
-  to { transform: translateY(100%); opacity: 0; }
+@keyframes hud-sweep {
+  to { transform: rotate(360deg); }
 }
 
 @media (min-width: 960px) and (min-aspect-ratio: 4/3) {

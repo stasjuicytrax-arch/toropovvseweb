@@ -34,6 +34,7 @@ tint?.addColorStop(1, 'rgba(38, 21, 38, .21)');
 
 let pendingFrame = null;
 let photoReady = false;
+let hudComplete = false;
 
 function paintReflection() {
   if (!glass || !sampleContext || reel.readyState < 2) return;
@@ -65,6 +66,7 @@ function cancelReflection() {
 
 function hideReflection() {
   cancelReflection();
+  hudComplete = false;
   lens.hidden = true;
   lens.classList.remove('is-playing');
 }
@@ -83,11 +85,18 @@ function syncPlayback() {
   });
 }
 
-reel.addEventListener('playing', () => {
+function showVideo() {
+  if (!hudComplete || reel.paused || reel.readyState < 2) return;
   paintReflection();
   lens.classList.add('is-playing');
   queueReflection();
+}
+
+lens.querySelector('.hud-charge').addEventListener('animationend', () => {
+  hudComplete = true;
+  showVideo();
 });
+reel.addEventListener('playing', showVideo);
 reel.addEventListener('pause', cancelReflection);
 reel.addEventListener('error', hideReflection);
 document.addEventListener('visibilitychange', syncPlayback);
