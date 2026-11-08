@@ -4,7 +4,7 @@ import { makeLetters, makeLights, makeRibbon } from './effects.js';
 const choices = {
   ribbon: { title: 'Стеклянная лента', create: makeRibbon },
   lights: { title: 'Сценический свет', create: makeLights },
-  letters: { title: 'Буквы ST', create: makeLetters },
+  letters: { title: 'TOROPOV', create: makeLetters },
 };
 const variant = new URLSearchParams(location.search).get('scene');
 const choice = Object.hasOwn(choices, variant) ? choices[variant] : choices.ribbon;
@@ -37,6 +37,7 @@ let foreground;
 let source = '';
 let frame = 0;
 let started = 0;
+let lastPaint = -Infinity;
 let contextLost = false;
 
 function svg(tag, attributes) {
@@ -63,7 +64,7 @@ function disposeEffect() {
   const materials = new Set();
   effect.object.traverse(node => {
     node.geometry?.dispose();
-    if (node.material) materials.add(node.material);
+    if (node.material) for (const material of [node.material].flat()) materials.add(material);
   });
   materials.forEach(material => material.dispose());
   scene.remove(effect.object);
@@ -75,17 +76,27 @@ function paint(seconds) {
   renderer.render(scene, camera);
 }
 
+function elapsed(now) {
+  if (reduced.matches) return effect.duration;
+  const seconds = (now - started) / 1000;
+  return effect.idle ? seconds : Math.min(effect.duration, seconds);
+}
+
 function tick(now) {
   frame = 0;
   if (!effect || document.hidden || contextLost) return;
-  const seconds = reduced.matches ? effect.duration : Math.min(effect.duration, (now - started) / 1000);
-  paint(seconds);
-  if (seconds < effect.duration) frame = requestAnimationFrame(tick);
+  const seconds = elapsed(now);
+  if (reduced.matches || seconds < effect.duration || !effect.idle || now - lastPaint >= 32) {
+    paint(seconds);
+    lastPaint = now;
+  }
+  if (!reduced.matches && (seconds < effect.duration || effect.idle)) frame = requestAnimationFrame(tick);
 }
 
 function play() {
   cancelAnimationFrame(frame);
   started = performance.now();
+  lastPaint = -Infinity;
   tick(started);
 }
 
@@ -120,8 +131,9 @@ function fit() {
     left: offsetX + 'px', top: offsetY + 'px',
     width: imageWidth * scale + 'px', height: imageHeight * scale + 'px',
   });
+  effect.fit?.(width / scale);
   if (changed) play();
-  else paint(reduced.matches ? effect.duration : Math.min(effect.duration, (performance.now() - started) / 1000));
+  else paint(elapsed(performance.now()));
 }
 
 async function init() {

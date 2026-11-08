@@ -1,8 +1,10 @@
 import {
-  BufferGeometry, CatmullRomCurve3, Color, DoubleSide, ExtrudeGeometry,
-  Float32BufferAttribute, Group, Mesh, MeshStandardMaterial, PlaneGeometry,
-  ShaderMaterial, Shape, Vector3,
+  Box2, BufferGeometry, CatmullRomCurve3, Color, DoubleSide, ExtrudeGeometry,
+  Float32BufferAttribute, Group, Mesh, MeshBasicMaterial, MeshStandardMaterial,
+  PlaneGeometry, ShaderMaterial, Vector3,
 } from 'three';
+import { SVGLoader } from 'three/addons/loaders/SVGLoader.js';
+import logoSvg from '../../logo/assets/logo.svg';
 
 const smooth = value => {
   const t = Math.max(0, Math.min(1, value));
@@ -151,64 +153,54 @@ export function makeLights(width, height, desktop) {
   };
 }
 
-function letterS() {
-  const s = new Shape();
-  s.moveTo(5, 16);
-  s.lineTo(17, 32);
-  s.bezierCurveTo(27, 22, 47, 18, 53, 27);
-  s.bezierCurveTo(58, 35, 46, 39, 33, 43);
-  s.bezierCurveTo(15, 48, 6, 57, 6, 72);
-  s.bezierCurveTo(6, 90, 20, 100, 42, 100);
-  s.bezierCurveTo(56, 100, 67, 96, 77, 88);
-  s.lineTo(66, 72);
-  s.bezierCurveTo(55, 80, 34, 84, 31, 73);
-  s.bezierCurveTo(28, 66, 37, 63, 50, 59);
-  s.bezierCurveTo(71, 53, 80, 44, 80, 28);
-  s.bezierCurveTo(80, 10, 63, 0, 42, 0);
-  s.bezierCurveTo(26, 0, 14, 6, 5, 16);
-  return s;
-}
-
-function letterT() {
-  const t = new Shape();
-  t.moveTo(0, 100);
-  t.lineTo(82, 100);
-  t.lineTo(82, 79);
-  t.lineTo(54, 79);
-  t.lineTo(54, 0);
-  t.lineTo(28, 0);
-  t.lineTo(28, 79);
-  t.lineTo(0, 79);
-  t.closePath();
-  return t;
-}
-
 export function makeLetters(width, height, desktop) {
   const object = new Group();
-  const material = new MeshStandardMaterial({ color: '#eac7a1', roughness: .31, metalness: .32 });
-  const letters = [letterS(), letterT()].map((shape, index) => {
+  const glyphs = new SVGLoader().parse(logoSvg).paths
+    .flatMap(path => path.toShapes())
+    .map(shape => ({ shape, bounds: new Box2().setFromPoints(shape.getPoints()) }))
+    .filter(({ bounds }) => bounds.min.y > 88)
+    .sort((a, b) => a.bounds.min.x - b.bounds.min.x);
+  const wordBounds = glyphs.reduce((box, { bounds }) => box.union(bounds), new Box2());
+  const wordCenter = (wordBounds.min.x + wordBounds.max.x) / 2;
+  const wordWidth = width * (desktop ? .57 : .74);
+  const scale = wordWidth / (wordBounds.max.x - wordBounds.min.x);
+  const base = height * (desktop ? .127 : .266);
+  const material = [
+    new MeshBasicMaterial({ color: '#ffffff' }),
+    new MeshStandardMaterial({ color: '#e6eaf2', roughness: .46, metalness: .10 }),
+  ];
+  const letters = glyphs.map(({ shape, bounds }) => {
+    const center = (bounds.min.x + bounds.max.x) / 2;
     const geometry = new ExtrudeGeometry(shape, {
-      depth: 16, bevelEnabled: true, bevelSize: 2.1, bevelThickness: 2.2,
-      bevelSegments: 3, curveSegments: 10,
+      depth: 12, bevelEnabled: true, bevelSize: 1.1, bevelThickness: 1.2,
+      bevelSegments: 2, curveSegments: 8,
     });
-    geometry.translate(-41, 0, -8);
+    geometry.translate(-center, -wordBounds.max.y, -6);
+    geometry.rotateX(Math.PI);
     const mesh = new Mesh(geometry, material);
-    const size = height * (desktop ? .187 : .091);
-    const x = desktop ? [.324, .420][index] : [.218, .375][index];
-    const base = height * (desktop ? [.365, .354][index] : [.434, .426][index]);
-    mesh.scale.setScalar(size / 100);
+    mesh.scale.setScalar(scale);
     object.add(mesh);
-    return { mesh, x: x * width, base, size };
+    return { mesh, x: (center - wordCenter) * scale };
   });
+  object.position.set(width * (desktop ? .49 : .5), -base, 0);
 
   return {
     object,
-    duration: 2.5,
+    duration: 2.35,
+    idle: true,
+    fit(visibleWidth) {
+      object.scale.setScalar(Math.min(1, visibleWidth * .91 / wordWidth));
+    },
     render(time) {
-      letters.forEach(({ mesh, x, base, size }, index) => {
-        const amount = smooth((time - index * .23) / 1.7);
-        mesh.position.set(x + (index === 0 ? -22 : 28) * (1 - amount), -base - size * .82 * (1 - amount), 0);
-        mesh.rotation.set(-.075, (index === 0 ? -.32 : .26) + (1 - amount) * (index === 0 ? -.68 : .48), -.055 + index * .08);
+      const float = Math.max(0, time - 2.35);
+      const drift = smooth(float / 1.2);
+      object.rotation.y = -.06 + drift * .045 * Math.sin(float * .8);
+      letters.forEach(({ mesh, x }, index) => {
+        const amount = smooth((time - index * .085) / 1.78);
+        const wave = float * 1.15 - index * .63;
+        const y = -(desktop ? 154 : 208) * (1 - amount) + drift * 5.5 * Math.sin(wave);
+        mesh.position.set(x, y, 0);
+        mesh.rotation.set(.10 * (1 - amount), .22 * (1 - amount), drift * .018 * Math.sin(wave + .5));
       });
     },
   };
